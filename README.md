@@ -1,2 +1,2 @@
 # arbi-client
-Protocol client for triggering flash loan arbitrage strategy on L2 chains.
+Protocol's client for triggering flash loan arbitrage strategies on L2 chains.
