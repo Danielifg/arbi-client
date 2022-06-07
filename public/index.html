@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<body style="padding:1em ;">
+
+<h1>Flash Quoter</h1>
+
+<p>Service Status : UP</p>
+<p><b>IP:</b> 35.182.252.167:3001</p>
+<p><b>IPv6:</b> 2600:1f11:d24:b00:d5b2:ed1c:37e7:c861</p>
+<h3>Paths</h3>
+<ul>
+    <li> <b>POST</b> /v1/heartbeat - returns service status.</li>
+    <li> <b>POST</b> /v1/arbitrage/matic - returns post status and confirms number of strategies received.</li>
+</ul>
+<h3>Strategies Format Example</h3>
+<p><b>Note:</b> For loan info a single object only update the amount and asset, do not add more loanInfo objects, only add strategy objects inside the array.</p>
+
+<pre class="prettyprint">
+    {
+        loanInfo:{ 
+            amount: 1000,
+            asset: "AAVE"
+        },
+        strategies: [
+           { 
+            dexSymbol: "SUSHI",
+            tokenA: "0xD6DF932A45C0f255f85145f286eA0b292B21C90B",
+            tokeB: "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+            pool: [0x0000000000000000000000000000000000000000],
+            priceA: "$100.00",
+            priceB: "$100.00"
+          }
+        ]
+    }
+   </pre>
+
+   <p><b>Note:</b> Please feel free to modify strategy object data to your needs for POC. </p>
+
+
+
+</body>
+</html>

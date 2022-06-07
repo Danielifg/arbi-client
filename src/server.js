@@ -10,6 +10,10 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+app.use(express.static('public'));
+
+
 app.route('/v1/arbitrage/matic').post((req, res) => { 
     let {loanInfo,strategies} = req.body && req.body.data;
     
@@ -28,9 +32,6 @@ app.route('/v1/heartbeat').post((req, res) => {
     return res.send(`Arbi client listening on port ${port}`)
 });
 
-app.get('/', (req, res) => {
-    res.send('Works!!')
-});
   
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
