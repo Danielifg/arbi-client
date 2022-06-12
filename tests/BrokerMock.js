@@ -32,7 +32,23 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
         poolsArray: [ZERO_ADDRESS],
         pathArray: [AAVE, WETH, DAI],
         swapTimeOut: 0
-      }  
+      },
+      { 
+        dexSymbol: "SUSHI",
+        amountIn: "1000",
+        amountOut: "985",
+        poolsArray: [ZERO_ADDRESS],
+        pathArray: [AAVE, WETH, DAI],
+        swapTimeOut: 0
+      },
+      { 
+        dexSymbol: "SUSHI",
+        amountIn: "1000",
+        amountOut: "985",
+        poolsArray: [ZERO_ADDRESS],
+        pathArray: [AAVE, WETH, DAI],
+        swapTimeOut: 0
+      }
     ]
 }
 
@@ -55,7 +71,8 @@ function _heartBeat(){
 
 function _postStrategy(strategy){
     return new Promise((resolve,reject) => {
-            return axios.post(`${WEB2_PROTOCOL}://localhost:3001/v1/arbitrage/matic`, {
+        const url = 'http://15.222.146.134:3001/v1/arbitrage/matic';
+            return axios.post(url, {
                 requestOptions,
                 data: strategy
             }).then((response) => {

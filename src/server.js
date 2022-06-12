@@ -37,3 +37,14 @@ app.listen(port, () => {
     console.log(`Flash Quoter listening on port ${port}`)
 });
 
+process.on('uncaughtException', function(err) {
+	console.log('UnCaught Exception 83: ' + err);
+	console.error(err.stack);
+	fs.appendFile('./critical.txt', err.stack, function(){ });
+});
+
+process.on('unhandledRejection', (reason, p) => {
+	console.log('Unhandled Rejection at: '+p+' - reason: '+reason);
+});
+
+
