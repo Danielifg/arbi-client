@@ -15,7 +15,6 @@ app.use(express.static('public'));
 
 
 app.route('/v1/arbitrage/matic').post((req, res) => { 
-    console.log("req:===========> ",req)
     console.log("req: ",req.body.data)
     let {loanInfo,strategies} = req.body && req.body.data;
     
