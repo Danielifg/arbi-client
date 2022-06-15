@@ -15,8 +15,9 @@ app.use(express.static('public'));
 
 
 app.route('/v1/arbitrage/matic').post((req, res) => { 
-
     let {loanInfo,strategies} = req && req.body;
+    console.log(loanInfo);
+    console.log(strategies);
     
     const successMsg = 
         strategies.length > 0?
