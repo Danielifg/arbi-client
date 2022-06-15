@@ -16,15 +16,15 @@ app.use(express.static('public'));
 
 app.route('/v1/arbitrage/matic').post((req, res) => { 
     console.log("req: ",req.body)
-    let {loanInfo,strategies} = req.body && req.body.data;
+    // let {loanInfo,strategies} = req.body && req.body.data;
     
-    const successMsg = 
-        strategies.length > 0?
-            `Status 200 \nNumber of strategies received ${strategies.length}`:
-            'Status 500';
+    // const successMsg = 
+    //     strategies.length > 0?
+    //         `Status 200 \nNumber of strategies received ${strategies.length}`:
+    //         'Status 500';
 
-    console.log(loanInfo,strategies)
-    res.send(successMsg);
+    // console.log(loanInfo,strategies)
+    res.send(200);
 });
 
 app.route('/v1/heartbeat').post((req, res) => { 
