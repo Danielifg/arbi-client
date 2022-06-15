@@ -15,6 +15,8 @@ app.use(express.static('public'));
 
 
 app.route('/v1/arbitrage/matic').post((req, res) => { 
+    console.log("req:===========> ",req)
+    console.log("req: ",req.body.data)
     let {loanInfo,strategies} = req.body && req.body.data;
     
     const successMsg = 
@@ -37,6 +39,9 @@ app.listen(port, () => {
     console.log(`Flash Quoter listening on port ${port}`)
 });
 
+
+// TODO better Error handling with log libs
+// https://blog.heroku.com/best-practices-nodejs-errors
 process.on('uncaughtException', function(err) {
 	console.log('UnCaught Exception 83: ' + err);
 	console.error(err.stack);
