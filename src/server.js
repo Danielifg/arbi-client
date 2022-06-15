@@ -15,7 +15,7 @@ app.use(express.static('public'));
 
 
 app.route('/v1/arbitrage/matic').post((req, res) => { 
-    console.log("req: ",req.body.data)
+    console.log("req: ",req.body)
     let {loanInfo,strategies} = req.body && req.body.data;
     
     const successMsg = 
@@ -25,7 +25,6 @@ app.route('/v1/arbitrage/matic').post((req, res) => {
 
     console.log(loanInfo,strategies)
     res.send(successMsg);
-    // res.sendStatus(status);
 });
 
 app.route('/v1/heartbeat').post((req, res) => { 
