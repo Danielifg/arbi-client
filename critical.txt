@@ -1,0 +1,16 @@
+ReferenceError: _initController is not defined
+    at Server.<anonymous> (/Users/danielguerrero/workspace/FLASH/arbi-client/src/Server.js:59:5)
+    at Object.onceWrapper (events.js:482:28)
+    at Server.emit (events.js:376:20)
+    at emitListeningNT (net.js:1352:10)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21)ReferenceError: _initController is not defined
+    at Server.<anonymous> (/Users/danielguerrero/workspace/FLASH/arbi-client/src/Server.js:59:5)
+    at Object.onceWrapper (events.js:482:28)
+    at Server.emit (events.js:376:20)
+    at emitListeningNT (net.js:1352:10)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21)ReferenceError: _initController is not defined
+    at Server.<anonymous> (/Users/danielguerrero/workspace/FLASH/arbi-client/src/Server.js:59:5)
+    at Object.onceWrapper (events.js:482:28)
+    at Server.emit (events.js:376:20)
+    at emitListeningNT (net.js:1352:10)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21)

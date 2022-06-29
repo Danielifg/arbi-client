@@ -1,7 +1,21 @@
+'use strict';
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path')
+const fs = require('fs');
 const cors = require('cors');
+const {BigNumber} =require( "ethers");
+const ethers = require('ethers');
+const ArbitrageController = require('./ArbitrageController');
+
+// const write_node = `https://twilight-icy-log.matic.quiknode.pro/${process.env.NODE_POLY_KEY}`;
+// const write_node = `https://twilight-icy-log.matic.quiknode.pro/2d49e0fc113dcba25e5a127bc74a6545b1a9f440`;
+const write_node =`http://localhost:8545`;
+const read_node = "https://polygon-rpc.com/";
+const {getTraderContract} = require('./utils/getContracts');
+const fork_deployment_address = "0xb0761134896A55E5198780D87C13084Db004645a";
 
 
 const port = 3001;
@@ -9,23 +23,71 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 app.use(express.static('public'));
 
+const READ = true;
+const node = READ == true ? read_node : write_node;
 
-app.route('/v1/arbitrage/matic').post((req, res) => { 
-    let {loanInfo,strategies} = req && req.body;
-    console.log(loanInfo);
-    console.log(strategies);
+/* ** ********* **** TRADE SPECS  **** ** ********* ****/
+/* ** ********* **** ** ********* **** ** ********* ****/
+
+// CANNOT BE GREATER THAN 3000
+ const slippageTolerance = 3000; // 3000 /10000 = 0.3
+
+
+/* ** ********* **** ** ********* **** ** ********* ****/
+/* ** ********* **** ** ********* **** ** ********* ****/
+
+ /**
+ * @dev Initializes Js contract instance
+ * @returns Arbi-protocol contract instance
+ */
+async function _getController(){
+    console.log('controller running.');    
+    const chainId = 137;
+    console.log('node:',node)
+    const provider = await new ethers.providers.JsonRpcProvider( write_node );    
+    const arbiContract = await getTraderContract(provider,fork_deployment_address);
+    return await new ArbitrageController (
+            provider,
+            chainId,
+            arbiContract,
+            slippageTolerance
+    );
+}
+
+/**
+ * POC
+ * 1.- Receive strategy from broker
+ * 2.- Format strategy
+ * 3.- Send tx with strategy to contract
+ * 4.- Await for tx logs
+ * 
+ * V1
+ * 5.- Query admin balance for profit
+ * 6.- Display on controller UI tx logs of profitable strategies per chain
+ * 7.- Display contract native asset balance
+ */
+
+app.route('/v1/arbitrage/matic').post( async (req, res) => { 
+    console.log(' calling /v1/arbitrage/matic...');
+    const Controller = await  _getController();
+    const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
+
+    // params: strategy ID & req payload
+    const Strategy = await Controller.formatStrategy('001', payload);
+    console.log('StrategyFormatted: ', Strategy);
+
+    // await Controller.performStrategy(Strategy);
+    // console.log(strategies);
     
-    const successMsg = 
-        strategies.length > 0?
-            `Status 200 \nNumber of strategies received ${strategies.length}`:
-            'Status 500';
+    // const successMsg = 
+    //     strategies.length > 0?
+    //         `Status 200 \nNumber of strategies received ${strategies.length}`:
+    //         'Status 500';
 
     // console.log(loanInfo,strategies)
-    res.send(successMsg);
+    res.send(200);
 });
 
 app.route('/v1/heartbeat').post((req, res) => { 
@@ -48,7 +110,18 @@ process.on('uncaughtException', function(err) {
 });
 
 process.on('unhandledRejection', (reason, p) => {
-	console.log('Unhandled Rejection at: '+p+' - reason: '+reason);
+	console.log('Unhandled Rejection at :: '+JSON.stringify(p)+' - reason: '+ reason);
 });
 
 
+
+
+/**
+ *             string _dexSymbol;
+            address _dexAddress; 
+            uint256 _amountIn; 
+            uint256 _amountOut; 
+            uint256 _spotPrice;
+            address[] _paths;
+            uint24[] _poolFees;
+ */
