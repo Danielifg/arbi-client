@@ -35,12 +35,19 @@ module.exports = class ArbitrageController {
 
     async getControllerAddress(){
         return this.ArbitrageContract.address;
-     }
+    }
 
-    async deposit(_depositAmount){
+    async getProvider(){
+        return this.provider;
+    }
+    async setGlobalSlippage(slippage){
+        this.slippage = slippage;
+    }
+
+    async deposit(wallet,_depositAmount){
         let amountInEther = ethers.utils.formatEther(_depositAmount.toString());
         let tx = { 
-          to: ArbitrageContract.address,
+          to: this.ArbitrageContract.address,
           value: ethers.utils.parseEther(amountInEther)
         };
     
@@ -48,8 +55,9 @@ module.exports = class ArbitrageController {
         .then((txObj) => {console.log('txHash', txObj.hash)})
         .catch(err => console.log(err));
       
-        const traderBalance = await provider.getBalance(ArbitrageContract.address);
-        console.log('traderBalance: ',traderBalance.toString());
+        const traderBalance = await this.provider.getBalance(this.ArbitrageContract.address);
+        console.log('Arbitrage contract Balance: ',traderBalance.toString());
+        return traderBalance;
     }
     
     /**
@@ -115,41 +123,49 @@ module.exports = class ArbitrageController {
             let [ _dexSymbol, _dexRouterAddress ] = await this._selectRouterDetails(operation.dexSymbol.dexA);
             const _priceA = web3.utils.toWei(operation.priceA.toString());
             const _loanAmount = web3.utils.toWei(loanInfo.amount.toString());
-
-            console.log('priceA: ',_priceA,_dexSymbol);
+            const _amountIn_1 = _loanAmount;
             const [ _expectedAmountOut,_path, _poolFees ] = await this._selectRoutePath(
                                                                         _dexSymbol,
                                                                         operation.tokenA, operation.tokenB,
                                                                         _loanAmount,
-                                                                        _priceA
+                                                                        _priceA,
+                                                                        false // not second swap
                                                                         );
 
-            console.log('log: ',
-                [ _dexSymbol, _dexRouterAddress, _loanAmount, _expectedAmountOut,
-                    _priceA, _path, _poolFees ]
-            )
+            const _expectedAmountOut_1 = _expectedAmountOut !== null ? _expectedAmountOut : 0;
             const operation_1 = abiCoder.encode(
                     [ 'string', 'address', 'uint256','uint256','uint256','address[]','uint24[]'],
-                    [ _dexSymbol, _dexRouterAddress, _loanAmount, BigNumber.from(_expectedAmountOut.toString()),
+                    [ _dexSymbol, _dexRouterAddress, _amountIn_1, _expectedAmountOut_1,
                         _priceA, _path, _poolFees ]
             );
 
+            console.log('swap1:',[ _dexSymbol, _dexRouterAddress, _loanAmount, _expectedAmountOut_1,_priceA, _path, _poolFees ]);
+
             // operation_2
             let [ _dexSymbol2, _dexRouterAddress2 ] = await this._selectRouterDetails(operation.dexSymbol.dexB);
-            const _priceB = web3.utils.toWei(operation.priceB.toString());
-            console.log('priceB: ',_priceB,_dexSymbol2, _dexRouterAddress2);
+            // this covers having uniV3 as second swap
+            const _amountIn_2 = _dexSymbol2 === 'UNIV3' ? _expectedAmountOut_1 : 0; 
 
+
+            const _priceB = web3.utils.toWei(operation.priceB.toString());
             const [ _expectedAmountOut2, _path2, _poolFees2 ] = await this._selectRoutePath(
                                                                         _dexSymbol2,
                                                                         operation.tokenA,
                                                                         operation.tokenB, 
-                                                                        0, // amount in calculated on chain 
-                                                                        _priceB
-                                                                    );  
+                                                                        _amountIn_2, // if 0,this amountIn is calculated on chain 
+                                                                        _priceB,
+                                                                        true // second swap
+                                                                    );
+
+            console.log( '[_expectedAmountOut2, _path2, _poolFees2 ]', _expectedAmountOut2, _path2, _poolFees2 );
+
+            const _expectedAmountOut_2 = _expectedAmountOut2 !== 0 ? web3.utils.toWei(_expectedAmountOut2.toString()) : 0;
+
+            console.log('swap2: ',[ _dexSymbol2, _dexRouterAddress2, _amountIn_2, _expectedAmountOut_2, _priceB, _path2, _poolFees2 ])
 
             const operation_2 = abiCoder.encode(
                 [  'string', 'address', 'uint256','uint256','uint256','address[]','uint24[]'],
-                [ _dexSymbol2, _dexRouterAddress2, 0, 0, _priceB, _path2, _poolFees2 ]
+                [ _dexSymbol2, _dexRouterAddress2, _amountIn_2, _expectedAmountOut_2, _priceB, _path2, _poolFees2 ]
             );
 
         Strategy._ops.push(operation_1);
@@ -169,17 +185,26 @@ module.exports = class ArbitrageController {
     }
 
     // Price could be A or B
-    async _selectRoutePath(_dexSymbol, _tokenA, _tokenB, _amountIn, _price){
+    async _selectRoutePath(_dexSymbol, _tokenA, _tokenB, _amountIn, _price, _isSecondSwap){
         let _expectedAmountOut = 0;
         let _path = [];
         let _poolFees = [];
-
+        // this covers having uniV3 as first swap
         if(_dexSymbol === 'UNIV3'){
-            const route = await this._getUniswapV3Route(_tokenA, _tokenB, _amountIn).then(route => {
+            const path = _isSecondSwap ? [_tokenB,_tokenA] : [_tokenA,_tokenB];
+            _amountIn = await this._decimalConverter(_amountIn, path);
+            console.log('UNIV3 _amountIn: ',_amountIn)
+
+            await this._getUniswapV3Route(path, _amountIn).then(route => {
                 _path =  route._routeDataFormated.path;
                 _poolFees = route._routeDataFormated.poolFees;
+                _expectedAmountOut = route.amountOut;
+                console.log('routeUNIV3: ',route)
+
             });
         } else {
+            // not uniV3 and isFirstSwap = true
+            // we calculate _expectedOut_1
             if(_amountIn !== 0){
                 _amountIn = await this._decimalConverter(_amountIn, _tokenA, _tokenB);
                 _price = await this._decimalConverter(_price, _tokenA, _tokenB);
@@ -194,43 +219,69 @@ module.exports = class ArbitrageController {
                 _expectedAmountOut =  _expectedAmountOut - (_expectedAmountOut * (this.slippage / 10000));
                 console.log(`_expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut)
             
-            } else {
+            // not uniV3 and isFirstSwap = false
+            // we calculate _expectedOut_1 on chain
+            } else if(_amountIn !== 0){
                 _expectedAmountOut = 0;
-             }
-            _path = [_tokenA, _tokenB];
+            }
+            // not uni V3 and inverse path if _isSecondSwap =  true
+            _path = _isSecondSwap ? [_tokenB, _tokenA] : [_tokenA, _tokenB];
             _poolFees = [0];
         }
+        console.log(_dexSymbol,': ',[_expectedAmountOut,_path, _poolFees ])
         return [_expectedAmountOut,_path, _poolFees ];
     }
 
-    async _getUniswapV3Route(tokenA,tokenB,amountIn){
+    async _getUniswapV3Route(path,amountIn){
         return new Promise((resolve, reject) => {
             const route = this.UniswapV3Api.getTokenAPrice(
                 this.provider,
                 this.chainId, 
-                tokenA,
+                path[0],
                 BigNumber.from(amountIn),
-                tokenB,
+                path[1],
                 this.slippage
             );
             resolve(route);
         });
     }
 
-    async _decimalConverter(_amountA, _tokenA, _tokenB){
-        const tokenAInstance = await new ethers.Contract(_tokenA,IERC20abi.abi, this.provider);
-        const tokenBInstance = await new ethers.Contract(_tokenB,IERC20abi.abi, this.provider);
+    async _decimalConverter(_amountA, path){
+        const tokenAInstance = await new ethers.Contract(path[0],IERC20abi.abi, this.provider);
+        const tokenBInstance = await new ethers.Contract(path[1],IERC20abi.abi, this.provider);
 
         const _decimalsA = await tokenAInstance.decimals();
         const _decimalsB = await tokenBInstance.decimals();
-        let _amount = 0;
+
+        console.log(
+            '_decimalsA: ',_decimalsA,
+            '_decimalsB: ',_decimalsB,
+        )
 
         if (_decimalsA > _decimalsB) {
-            _amount = _amountA * (10**(_decimalsA - _decimalsB));
+
+            console.log('A>B *',_amountA)
+            let decimals = BigNumber.from(10**(_decimalsA - _decimalsB));
+
+            console.log('decimals * : ',decimals.toString())
+
+            _amountA = BigNumber.from(_amountA.toString()).mul(decimals.toString());
+
+            console.log('*: ',_amount.toString())
+
         } else if (_decimalsB > _decimalsA) {
-            _amount = _amountA / (10**(_decimalsB - _decimalsA));
+
+            console.log('B>A / ',_amountA)
+            let decimals = BigNumber.from(10**(_decimalsB - _decimalsA));
+
+            console.log('decimals / : ',decimals.toString())
+
+            _amountA = BigNumber.from(_amountA.toString()).div(decimals.toString());
+
+            console.log('/: ',_amount.toString());
+
         }
-        return _amount;
+        return _amountA;
     }
 
 }

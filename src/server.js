@@ -15,7 +15,7 @@ const ArbitrageController = require('./ArbitrageController');
 const write_node =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
 const {getTraderContract} = require('./utils/getContracts');
-const fork_deployment_address = "0xb0761134896A55E5198780D87C13084Db004645a";
+const fork_deployment_address = "0x445077895ab2556dda0da000201211305f6aa6e7";
 
 
 const port = 3001;
@@ -32,7 +32,7 @@ const node = READ == true ? read_node : write_node;
 /* ** ********* **** ** ********* **** ** ********* ****/
 
 // CANNOT BE GREATER THAN 3000
- const slippageTolerance = 3000; // 3000 /10000 = 0.3
+ const slippageTolerance = 300; // 3000 /10000 = 0.3
 
 
 /* ** ********* **** ** ********* **** ** ********* ****/
@@ -45,15 +45,24 @@ const node = READ == true ? read_node : write_node;
 async function _getController(){
     console.log('controller running.');    
     const chainId = 137;
-    console.log('node:',node)
     const provider = await new ethers.providers.JsonRpcProvider( write_node );    
-    const arbiContract = await getTraderContract(provider,fork_deployment_address);
-    return await new ArbitrageController (
+    const wallet =  await new ethers.Wallet(process.env.PRIVATE_KEY_POC , provider);
+
+    const arbiContract = await getTraderContract(wallet,fork_deployment_address);
+
+
+    const pocBalance = await provider.getBalance(wallet.address);
+    // await Controller.jsController.deposit(wallet,pocBalance);
+
+
+    return {
+       contractInstance: arbiContract,
+       jsController: await new ArbitrageController (
             provider,
             chainId,
             arbiContract,
             slippageTolerance
-    );
+    )}
 }
 
 /**
@@ -67,6 +76,14 @@ async function _getController(){
  * 5.- Query admin balance for profit
  * 6.- Display on controller UI tx logs of profitable strategies per chain
  * 7.- Display contract native asset balance
+ * 
+ * 
+ * const provider = new ethers.providers.Web3Provider(window.ethereum)
+º  const signer = provider.getSigner();
+º  const contract = new ethers.Contract(contractDeployedAddress, Contract.abi, signer)
+º  
+º  await contract.someMethodThatRequiresSigning();
+
  */
 
 app.route('/v1/arbitrage/matic').post( async (req, res) => { 
@@ -75,18 +92,20 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
 
     // params: strategy ID & req payload
-    const Strategy = await Controller.formatStrategy('001', payload);
+    const Strategy = await Controller.jsController.formatStrategy('001', payload);
     console.log('StrategyFormatted: ', Strategy);
 
-    // await Controller.performStrategy(Strategy);
-    // console.log(strategies);
+    // const tx = await Controller.contractInstance.performStrategy(Strategy,{
+    //                            gasLimit: 5000000,
+    //                         });
+    
+    // console.log(tx);
     
     // const successMsg = 
     //     strategies.length > 0?
     //         `Status 200 \nNumber of strategies received ${strategies.length}`:
     //         'Status 500';
 
-    // console.log(loanInfo,strategies)
     res.send(200);
 });
 

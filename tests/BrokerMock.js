@@ -20,22 +20,6 @@ const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const USDC= "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // 6 decimals
 const oneINCH = "0x9c2C5fd7b07E95EE044DDeba0E97a665F142394f";
 
-const _testStrategy = { 
-            loanInfo:{ amount: 100, asset: '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619' },
-            strategies:  [
-                  {
-                    dexSymbol: { dexA: 'dfyn', dexB: 'uniswap' },
-                    tokenA: USDC,
-                    tokenB: oneINCH,
-                    pool: {
-                      poolA: '0xBD934A7778771A7E2D9bf80596002a214D8C9304',
-                      poolB: '0x0e44cEb592AcFC5D3F09D996302eB4C499ff8c10'
-                    },
-                    priceA: 1223.84,
-                    priceB: 1238.59
-                  },
-                ]
-              }
 
 const WEB2_PROTOCOL = process.env.PROD == true? "https":"http";
 const requestOptions = {headers: { "Content-Type": "application/json" }};
@@ -59,7 +43,7 @@ function _postStrategy(strategy){
         const url = 'http://localhost:3001/v1/arbitrage/matic';
             return axios.post(url, {
                 requestOptions,
-                data: _testStrategy
+                data: strategy
             }).then((response) => {
                 console.log(response.data)
                 return response.data;
@@ -69,6 +53,29 @@ function _postStrategy(strategy){
         });
 }
 
+const _testStrategy = [
+    { 
+      loanInfo:{ amount: 100, asset: AAVE },
+      strategies:  [
+            {
+              dexSymbol: { dexA: 'uniswap', dexB: 'sushiswap' },
+              tokenA: AAVE,
+              tokenB: WETH,
+              pool: {
+                poolA: '0xBD934A7778771A7E2D9bf80596002a214D8C9304',
+                poolB: '0x0e44cEb592AcFC5D3F09D996302eB4C499ff8c10'
+              },
+              priceA: 1223.84,
+              priceB: 1238.59
+            },
+          ]
+    }
+  ]
 
-const _perform = () =>  _postStrategy( _testStrategy );
+const _perform = () =>  {
+  _testStrategy.forEach(str => {
+    console.log('2')
+    _postStrategy( str )
+  });
+}
 _perform();
