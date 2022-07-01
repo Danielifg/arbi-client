@@ -7,16 +7,21 @@ const path = require('path')
 const fs = require('fs');
 const cors = require('cors');
 const {BigNumber} =require( "ethers");
-const ethers = require('ethers');
+const {ethers,Wallet} = require('ethers');
 const ArbitrageController = require('./ArbitrageController');
+const Web3 = require('Web3');
+
+const ArbiTraderABI = require( './abi/ArbiTrader.json');
+const ERC20 = require( './abi/ERC20.json');
 
 // const write_node = `https://twilight-icy-log.matic.quiknode.pro/${process.env.NODE_POLY_KEY}`;
 // const write_node = `https://twilight-icy-log.matic.quiknode.pro/2d49e0fc113dcba25e5a127bc74a6545b1a9f440`;
+const url = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjCOWrg-P0VBZbvfr4EqNpc";
+
 const write_node =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
 const {getTraderContract} = require('./utils/getContracts');
-const fork_deployment_address = "0x445077895ab2556dda0da000201211305f6aa6e7";
-
+const fork_deployment_address = "0x69d2ffc1927146dc0fc18c7e41b8bdd2167865dd";
 
 const port = 3001;
 const app = express();
@@ -24,9 +29,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
-const READ = true;
-const node = READ == true ? read_node : write_node;
 
 /* ** ********* **** TRADE SPECS  **** ** ********* ****/
 /* ** ********* **** ** ********* **** ** ********* ****/
@@ -45,20 +47,30 @@ const node = READ == true ? read_node : write_node;
 async function _getController(){
     console.log('controller running.');    
     const chainId = 137;
-    const provider = await new ethers.providers.JsonRpcProvider( write_node );    
-    const wallet =  await new ethers.Wallet(process.env.PRIVATE_KEY_POC , provider);
 
-    const arbiContract = await getTraderContract(wallet,fork_deployment_address);
+    /** Ethers provider */
+    // const provider = await new ethers.providers.JsonRpcProvider( write_node );    
+    const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
 
+    const signer = new Wallet (  process.env.PRIVATE_KEY_POC, provider );
 
-    const pocBalance = await provider.getBalance(wallet.address);
-    // await Controller.jsController.deposit(wallet,pocBalance);
+    const arbiContract = await getTraderContract(fork_deployment_address,signer);
+    
+    // const signerBalance = await provider.getBalance(signer.address);
 
+    // await Controller.jsController.deposit(signerBalance);
+
+    // /** WEB· provider */
+    // // const web3 = new Web3(write_node);
+    // // const poc_wallet = await web3.eth.accounts.privateKeyToAccount(process.env.PRIVATE_KEY_POC);
+    // // console.log('pocwallet: ',poc_wallet)
+    // // const arbiContract = new web3.eth.Contract(ArbiTraderABI.abi,fork_deployment_address);
 
     return {
+    //    adminWallet : poc_wallet,
        contractInstance: arbiContract,
        jsController: await new ArbitrageController (
-            provider,
+        provider,
             chainId,
             arbiContract,
             slippageTolerance
@@ -91,15 +103,26 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     const Controller = await  _getController();
     const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
 
+    const provider = await Controller.jsController.getProvider();
+    
     // params: strategy ID & req payload
     const Strategy = await Controller.jsController.formatStrategy('001', payload);
-    console.log('StrategyFormatted: ', Strategy);
+    console.log('Strategy provider: ', Strategy);
 
-    // const tx = await Controller.contractInstance.performStrategy(Strategy,{
-    //                            gasLimit: 5000000,
-    //                         });
-    
-    // console.log(tx);
+    // const contractInstance = await Controller.contractInstance;
+    //     await contractInstance.methods.performStrategy(Strategy)
+    //     .send({
+    //         from: Controller.adminWallet.address,
+    //         gasLimit: 5000000,
+    //     }).on('transactionHash', (transactionHash) => {
+    //         console.log('transactionHash: ',transactionHash);
+    //     }).on('error', (err, receipt) => {
+    //         err && console.log('err: ', err.data);
+    //         receipt && console.log('receipt: ',receipt);
+    //     }).on('confirmation', (confirmationNumber) => {
+    //         console.log('confirmationNumber: ',confirmationNumber);
+    //     });
+        
     
     // const successMsg = 
     //     strategies.length > 0?

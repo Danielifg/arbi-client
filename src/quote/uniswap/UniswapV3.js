@@ -49,6 +49,7 @@ module.exports = class UniswapV3Api {
    * @returns expected out amount v3 routes and pools fees
    */
    async getTokenAPrice(provider,chainId, tokenA, tokenA_amount, tokenB, slippage) {
+      // console.log('v3 provider: ',provider)
       const router = new AlphaRouter({ chainId: chainId, provider: provider});
 
       const tokenAInstance = await new ethers.Contract(tokenA,IERC20abi.abi, provider);
@@ -67,7 +68,6 @@ module.exports = class UniswapV3Api {
       const TOKEN_B = new Token( chainId , tokenB , tokenB_decimals, tokenB_symbol,tokenB_name);
       
       const _amountOut = CurrencyAmount.fromRawAmount(TOKEN_A, JSBI.BigInt(tokenA_amount));
-
       const route = await router.route(
         _amountOut,
         TOKEN_B,
@@ -86,7 +86,9 @@ module.exports = class UniswapV3Api {
         (error) => { return (error) }
       );
 
+      // console.log('route: ',route)
       const [ amountOut, _routeDataFormated ] = this.chooseRouteAndSetPrice(tokenA, tokenB, route);
+      console.log('[ amountOut, _routeDataFormated ] : ',[ amountOut, _routeDataFormated ] )
       return {amountOut, _routeDataFormated};
     }
   }

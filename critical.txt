@@ -13,4 +13,9 @@ ReferenceError: _initController is not defined
     at Object.onceWrapper (events.js:482:28)
     at Server.emit (events.js:376:20)
     at emitListeningNT (net.js:1352:10)
-    at processTicksAndRejections (internal/process/task_queues.js:81:21)
+    at processTicksAndRejections (internal/process/task_queues.js:81:21)ReferenceError: confirmationNumber is not defined
+    at Promise.<anonymous> (/Users/danielguerrero/workspace/FLASH/arbi-client/src/Server.js:114:54)
+    at Promise.emit (/Users/danielguerrero/workspace/FLASH/arbi-client/node_modules/eventemitter3/index.js:182:35)
+    at Timeout._onTimeout (/Users/danielguerrero/workspace/FLASH/arbi-client/node_modules/web3-utils/lib/index.js:70:21)
+    at listOnTimeout (internal/timers.js:555:17)
+    at processTimers (internal/timers.js:498:7)

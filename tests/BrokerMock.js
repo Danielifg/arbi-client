@@ -59,8 +59,8 @@ const _testStrategy = [
       strategies:  [
             {
               dexSymbol: { dexA: 'uniswap', dexB: 'sushiswap' },
-              tokenA: AAVE,
-              tokenB: WETH,
+              tokenA: USDC,
+              tokenB: AAVE,
               pool: {
                 poolA: '0xBD934A7778771A7E2D9bf80596002a214D8C9304',
                 poolB: '0x0e44cEb592AcFC5D3F09D996302eB4C499ff8c10'
