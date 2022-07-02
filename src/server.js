@@ -9,7 +9,7 @@ const cors = require('cors');
 const {BigNumber} =require( "ethers");
 const {ethers,Wallet} = require('ethers');
 const ArbitrageController = require('./ArbitrageController');
-const Web3 = require('Web3');
+const Web3 = require('web3');
 
 const ArbiTraderABI = require( './abi/ArbiTrader.json');
 const ERC20 = require( './abi/ERC20.json');
