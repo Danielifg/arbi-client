@@ -16,7 +16,7 @@ const ERC20 = require( './abi/ERC20.json');
 
 // const write_node = `https://twilight-icy-log.matic.quiknode.pro/${process.env.NODE_POLY_KEY}`;
 // const write_node = `https://twilight-icy-log.matic.quiknode.pro/2d49e0fc113dcba25e5a127bc74a6545b1a9f440`;
-const url = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjCOWrg-P0VBZbvfr4EqNpc";
+const ALCHEMY_FREE_NODE = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjCOWrg-P0VBZbvfr4EqNpc";
 
 const write_node =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
@@ -50,7 +50,7 @@ async function _getController(){
 
     /** Ethers provider */
     // const provider = await new ethers.providers.JsonRpcProvider( write_node );    
-    const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545');
+    const provider = new ethers.providers.JsonRpcProvider(ALCHEMY_FREE_NODE);
 
     const signer = new Wallet (  process.env.PRIVATE_KEY_POC, provider );
 
