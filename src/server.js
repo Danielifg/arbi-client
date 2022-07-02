@@ -101,6 +101,7 @@ async function _getController(){
 app.route('/v1/arbitrage/matic').post( async (req, res) => { 
     console.log(' calling /v1/arbitrage/matic...');
     const Controller = await  _getController();
+    console.log('DATA ====>>',req && req.body && req.body.data);
     const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
 
     const provider = await Controller.jsController.getProvider();
