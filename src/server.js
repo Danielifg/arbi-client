@@ -21,7 +21,7 @@ const url = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjCOWrg-P0VBZbvfr
 const write_node =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
 const {getTraderContract} = require('./utils/getContracts');
-const fork_deployment_address = "0x69d2ffc1927146dc0fc18c7e41b8bdd2167865dd";
+const fork_deployment_address = "0xb0761134896a55e5198780d87c13084db004645a";
 
 const port = 3001;
 const app = express();
@@ -67,10 +67,10 @@ async function _getController(){
     // // const arbiContract = new web3.eth.Contract(ArbiTraderABI.abi,fork_deployment_address);
 
     return {
-    //    adminWallet : poc_wallet,
+       adminWallet : signer,
        contractInstance: arbiContract,
        jsController: await new ArbitrageController (
-        provider,
+            provider,
             chainId,
             arbiContract,
             slippageTolerance
@@ -109,8 +109,12 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     const Strategy = await Controller.jsController.formatStrategy('001', payload);
     console.log('Strategy provider: ', Strategy);
 
-    // const contractInstance = await Controller.contractInstance;
-    //     await contractInstance.methods.performStrategy(Strategy)
+    const contractInstance = await Controller.contractInstance;
+    //  const tx =  await contractInstance.performStrategy(Strategy,
+    //     {
+    //         gasLimit:500000
+    //     })
+    //  console.log('tx',tx)
     //     .send({
     //         from: Controller.adminWallet.address,
     //         gasLimit: 5000000,

@@ -1,210 +1,1463 @@
 {
-  "_format": "hh-sol-artifact-1",
-  "contractName": "ArbiTrader",
-  "sourceName": "contracts/ArbiTrader.sol",
-  "abi": [
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "aavePoolProvider_",
-          "type": "address"
-        },
-        {
-          "internalType": "address",
-          "name": "treassury_",
-          "type": "address"
-        }
+  "abi": [],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "ast": {
+    "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/AbstractTrader.sol",
+    "id": 108,
+    "exportedSymbols": {
+      "AbstractTrader": [
+        107
       ],
-      "stateMutability": "nonpayable",
-      "type": "constructor"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_dexAddress",
-          "type": "address"
-        }
+      "IERC20": [
+        28217
       ],
-      "name": "FailSwapEvent",
-      "type": "event"
+      "IExchange": [
+        4414
+      ]
     },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "string",
-          "name": "_strategyId",
-          "type": "string"
-        }
-      ],
-      "name": "StrategyEvent",
-      "type": "event"
-    },
-    {
-      "stateMutability": "payable",
-      "type": "fallback"
-    },
-    {
-      "inputs": [],
-      "name": "_aavePool",
-      "outputs": [
-        {
-          "internalType": "contract IPool",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "_aavePoolProvider",
-      "outputs": [
-        {
-          "internalType": "contract IPoolAddressesProvider",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "_owner",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "_treassury",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "deposit",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "_asset",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_loanAmount",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_premium",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "_initiator",
-          "type": "address"
-        },
-        {
-          "internalType": "bytes",
-          "name": "_data",
-          "type": "bytes"
-        }
-      ],
-      "name": "executeOperation",
-      "outputs": [
-        {
-          "internalType": "bool",
-          "name": "",
-          "type": "bool"
-        }
-      ],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "components": [
-            {
-              "internalType": "string",
-              "name": "_strategyId",
-              "type": "string"
+    "nodeType": "SourceUnit",
+    "src": "37:1935:0",
+    "nodes": [
+      {
+        "id": 1,
+        "nodeType": "PragmaDirective",
+        "src": "37:22:0",
+        "literals": [
+          "solidity",
+          "0.8",
+          ".4"
+        ]
+      },
+      {
+        "id": 2,
+        "nodeType": "ImportDirective",
+        "src": "61:36:0",
+        "absolutePath": "/Users/danielguerrero/workspace/FLASH/arbi-protocol/contracts/interfaces/IExchange.sol",
+        "file": "./interfaces/IExchange.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 108,
+        "sourceUnit": 4415,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 107,
+        "nodeType": "ContractDefinition",
+        "src": "99:1179:0",
+        "nodes": [
+          {
+            "id": 9,
+            "nodeType": "StructDefinition",
+            "src": "138:90:0",
+            "canonicalName": "AbstractTrader.Pool",
+            "members": [
+              {
+                "constant": false,
+                "id": 4,
+                "mutability": "mutable",
+                "name": "token0",
+                "nameLocation": "168:6:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "160:14:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 3,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "160:7:0",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 6,
+                "mutability": "mutable",
+                "name": "token1",
+                "nameLocation": "192:6:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "184:14:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 5,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "184:7:0",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 8,
+                "mutability": "mutable",
+                "name": "poolFee",
+                "nameLocation": "214:7:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 9,
+                "src": "208:13:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint8",
+                  "typeString": "uint8"
+                },
+                "typeName": {
+                  "id": 7,
+                  "name": "uint8",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "208:5:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint8",
+                    "typeString": "uint8"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Pool",
+            "nameLocation": "145:4:0",
+            "scope": 107,
+            "visibility": "public"
+          },
+          {
+            "id": 17,
+            "nodeType": "StructDefinition",
+            "src": "233:94:0",
+            "canonicalName": "AbstractTrader.Swap",
+            "members": [
+              {
+                "constant": false,
+                "id": 12,
+                "mutability": "mutable",
+                "name": "pool",
+                "nameLocation": "260:4:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 17,
+                "src": "255:9:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_struct$_Pool_$9_storage_ptr",
+                  "typeString": "struct AbstractTrader.Pool"
+                },
+                "typeName": {
+                  "id": 11,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 10,
+                    "name": "Pool",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 9,
+                    "src": "255:4:0"
+                  },
+                  "referencedDeclaration": 9,
+                  "src": "255:4:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_Pool_$9_storage_ptr",
+                    "typeString": "struct AbstractTrader.Pool"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 14,
+                "mutability": "mutable",
+                "name": "amountIn",
+                "nameLocation": "282:8:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 17,
+                "src": "274:16:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 13,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "274:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 16,
+                "mutability": "mutable",
+                "name": "amountOutMin",
+                "nameLocation": "308:12:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 17,
+                "src": "300:20:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 15,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "300:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Swap",
+            "nameLocation": "240:4:0",
+            "scope": 107,
+            "visibility": "public"
+          },
+          {
+            "id": 34,
+            "nodeType": "StructDefinition",
+            "src": "337:248:0",
+            "canonicalName": "AbstractTrader.Operation",
+            "members": [
+              {
+                "constant": false,
+                "id": 19,
+                "mutability": "mutable",
+                "name": "_dexSymbol",
+                "nameLocation": "375:10:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "368:17:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 18,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "368:6:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 21,
+                "mutability": "mutable",
+                "name": "_dexAddress",
+                "nameLocation": "407:11:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "399:19:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 20,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "399:7:0",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 23,
+                "mutability": "mutable",
+                "name": "_amountIn",
+                "nameLocation": "441:9:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "433:17:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 22,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "433:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 25,
+                "mutability": "mutable",
+                "name": "_amountOut",
+                "nameLocation": "473:10:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "465:18:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 24,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "465:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 27,
+                "mutability": "mutable",
+                "name": "_spotPrice",
+                "nameLocation": "506:10:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "498:18:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 26,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "498:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 30,
+                "mutability": "mutable",
+                "name": "_paths",
+                "nameLocation": "540:6:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "530:16:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                  "typeString": "address[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 28,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "530:7:0",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "id": 29,
+                  "nodeType": "ArrayTypeName",
+                  "src": "530:9:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                    "typeString": "address[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 33,
+                "mutability": "mutable",
+                "name": "_poolFees",
+                "nameLocation": "569:9:0",
+                "nodeType": "VariableDeclaration",
+                "scope": 34,
+                "src": "560:18:0",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_uint24_$dyn_storage_ptr",
+                  "typeString": "uint24[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 31,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "560:6:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "id": 32,
+                  "nodeType": "ArrayTypeName",
+                  "src": "560:8:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint24_$dyn_storage_ptr",
+                    "typeString": "uint24[]"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Operation",
+            "nameLocation": "344:9:0",
+            "scope": 107,
+            "visibility": "public"
+          },
+          {
+            "id": 106,
+            "nodeType": "FunctionDefinition",
+            "src": "589:687:0",
+            "body": {
+              "id": 105,
+              "nodeType": "Block",
+              "src": "732:544:0",
+              "statements": [
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 48,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "id": 45,
+                        "name": "_poolFees",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 40,
+                        "src": "746:9:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                          "typeString": "uint24[] memory"
+                        }
+                      },
+                      "id": 46,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "src": "746:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "hexValue": "32",
+                      "id": 47,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "766:1:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_2_by_1",
+                        "typeString": "int_const 2"
+                      },
+                      "value": "2"
+                    },
+                    "src": "746:21:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 71,
+                  "nodeType": "IfStatement",
+                  "src": "742:231:0",
+                  "trueBody": {
+                    "id": 70,
+                    "nodeType": "Block",
+                    "src": "769:204:0",
+                    "statements": [
+                      {
+                        "expression": {
+                          "id": 68,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftHandSide": {
+                            "id": 49,
+                            "name": "_path",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 43,
+                            "src": "783:5:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          "nodeType": "Assignment",
+                          "operator": "=",
+                          "rightHandSide": {
+                            "arguments": [
+                              {
+                                "baseExpression": {
+                                  "id": 52,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "825:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 54,
+                                "indexExpression": {
+                                  "hexValue": "30",
+                                  "id": 53,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "832:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "825:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 55,
+                                  "name": "_poolFees",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 40,
+                                  "src": "852:9:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                                    "typeString": "uint24[] memory"
+                                  }
+                                },
+                                "id": 57,
+                                "indexExpression": {
+                                  "hexValue": "30",
+                                  "id": 56,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "862:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "852:12:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 58,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "882:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 60,
+                                "indexExpression": {
+                                  "hexValue": "31",
+                                  "id": 59,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "889:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_1_by_1",
+                                    "typeString": "int_const 1"
+                                  },
+                                  "value": "1"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "882:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 61,
+                                  "name": "_poolFees",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 40,
+                                  "src": "909:9:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                                    "typeString": "uint24[] memory"
+                                  }
+                                },
+                                "id": 63,
+                                "indexExpression": {
+                                  "hexValue": "31",
+                                  "id": 62,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "919:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_1_by_1",
+                                    "typeString": "int_const 1"
+                                  },
+                                  "value": "1"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "909:12:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 64,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "939:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 66,
+                                "indexExpression": {
+                                  "hexValue": "32",
+                                  "id": 65,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "946:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_2_by_1",
+                                    "typeString": "int_const 2"
+                                  },
+                                  "value": "2"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "939:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "expression": {
+                                "id": 50,
+                                "name": "abi",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": -1,
+                                "src": "791:3:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_magic_abi",
+                                  "typeString": "abi"
+                                }
+                              },
+                              "id": 51,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberName": "encodePacked",
+                              "nodeType": "MemberAccess",
+                              "src": "791:16:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$",
+                                "typeString": "function () pure returns (bytes memory)"
+                              }
+                            },
+                            "id": 67,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "791:171:0",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          "src": "783:179:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes_memory_ptr",
+                            "typeString": "bytes memory"
+                          }
+                        },
+                        "id": 69,
+                        "nodeType": "ExpressionStatement",
+                        "src": "783:179:0"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "condition": {
+                    "commonType": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    },
+                    "id": 75,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftExpression": {
+                      "expression": {
+                        "id": 72,
+                        "name": "_poolFees",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 40,
+                        "src": "986:9:0",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                          "typeString": "uint24[] memory"
+                        }
+                      },
+                      "id": 73,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "length",
+                      "nodeType": "MemberAccess",
+                      "src": "986:16:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "nodeType": "BinaryOperation",
+                    "operator": "==",
+                    "rightExpression": {
+                      "hexValue": "33",
+                      "id": 74,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "1006:1:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_3_by_1",
+                        "typeString": "int_const 3"
+                      },
+                      "value": "3"
+                    },
+                    "src": "986:21:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 104,
+                  "nodeType": "IfStatement",
+                  "src": "982:288:0",
+                  "trueBody": {
+                    "id": 103,
+                    "nodeType": "Block",
+                    "src": "1009:261:0",
+                    "statements": [
+                      {
+                        "expression": {
+                          "id": 101,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "leftHandSide": {
+                            "id": 76,
+                            "name": "_path",
+                            "nodeType": "Identifier",
+                            "overloadedDeclarations": [],
+                            "referencedDeclaration": 43,
+                            "src": "1023:5:0",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          "nodeType": "Assignment",
+                          "operator": "=",
+                          "rightHandSide": {
+                            "arguments": [
+                              {
+                                "baseExpression": {
+                                  "id": 79,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "1065:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 81,
+                                "indexExpression": {
+                                  "hexValue": "30",
+                                  "id": 80,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1072:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1065:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 82,
+                                  "name": "_poolFees",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 40,
+                                  "src": "1092:9:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                                    "typeString": "uint24[] memory"
+                                  }
+                                },
+                                "id": 84,
+                                "indexExpression": {
+                                  "hexValue": "30",
+                                  "id": 83,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1102:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_0_by_1",
+                                    "typeString": "int_const 0"
+                                  },
+                                  "value": "0"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1092:12:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 85,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "1122:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 87,
+                                "indexExpression": {
+                                  "hexValue": "31",
+                                  "id": 86,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1129:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_1_by_1",
+                                    "typeString": "int_const 1"
+                                  },
+                                  "value": "1"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1122:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 88,
+                                  "name": "_poolFees",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 40,
+                                  "src": "1149:9:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                                    "typeString": "uint24[] memory"
+                                  }
+                                },
+                                "id": 90,
+                                "indexExpression": {
+                                  "hexValue": "31",
+                                  "id": 89,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1159:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_1_by_1",
+                                    "typeString": "int_const 1"
+                                  },
+                                  "value": "1"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1149:12:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 91,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "1179:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 93,
+                                "indexExpression": {
+                                  "hexValue": "32",
+                                  "id": 92,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1186:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_2_by_1",
+                                    "typeString": "int_const 2"
+                                  },
+                                  "value": "2"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1179:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 94,
+                                  "name": "_poolFees",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 40,
+                                  "src": "1206:9:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                                    "typeString": "uint24[] memory"
+                                  }
+                                },
+                                "id": 96,
+                                "indexExpression": {
+                                  "hexValue": "32",
+                                  "id": 95,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1216:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_2_by_1",
+                                    "typeString": "int_const 2"
+                                  },
+                                  "value": "2"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1206:12:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                }
+                              },
+                              {
+                                "baseExpression": {
+                                  "id": 97,
+                                  "name": "_paths",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": 37,
+                                  "src": "1236:6:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                                    "typeString": "address[] memory"
+                                  }
+                                },
+                                "id": 99,
+                                "indexExpression": {
+                                  "hexValue": "33",
+                                  "id": 98,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "kind": "number",
+                                  "lValueRequested": false,
+                                  "nodeType": "Literal",
+                                  "src": "1243:1:0",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_rational_3_by_1",
+                                    "typeString": "int_const 3"
+                                  },
+                                  "value": "3"
+                                },
+                                "isConstant": false,
+                                "isLValue": true,
+                                "isPure": false,
+                                "lValueRequested": false,
+                                "nodeType": "IndexAccess",
+                                "src": "1236:9:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_uint24",
+                                  "typeString": "uint24"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "expression": {
+                                "id": 77,
+                                "name": "abi",
+                                "nodeType": "Identifier",
+                                "overloadedDeclarations": [],
+                                "referencedDeclaration": -1,
+                                "src": "1031:3:0",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_magic_abi",
+                                  "typeString": "abi"
+                                }
+                              },
+                              "id": 78,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "memberName": "encodePacked",
+                              "nodeType": "MemberAccess",
+                              "src": "1031:16:0",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_function_abiencodepacked_pure$__$returns$_t_bytes_memory_ptr_$",
+                                "typeString": "function () pure returns (bytes memory)"
+                              }
+                            },
+                            "id": 100,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "kind": "functionCall",
+                            "lValueRequested": false,
+                            "names": [],
+                            "nodeType": "FunctionCall",
+                            "src": "1031:228:0",
+                            "tryCall": false,
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_bytes_memory_ptr",
+                              "typeString": "bytes memory"
+                            }
+                          },
+                          "src": "1023:236:0",
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_bytes_memory_ptr",
+                            "typeString": "bytes memory"
+                          }
+                        },
+                        "id": 102,
+                        "nodeType": "ExpressionStatement",
+                        "src": "1023:236:0"
+                      }
+                    ]
+                  }
+                }
+              ]
             },
-            {
-              "internalType": "uint8",
-              "name": "_strategyLength",
-              "type": "uint8"
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "_defineExactInputPath",
+            "nameLocation": "598:21:0",
+            "parameters": {
+              "id": 41,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37,
+                  "mutability": "mutable",
+                  "name": "_paths",
+                  "nameLocation": "646:6:0",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 106,
+                  "src": "629:23:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 35,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "629:7:0",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 36,
+                    "nodeType": "ArrayTypeName",
+                    "src": "629:9:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 40,
+                  "mutability": "mutable",
+                  "name": "_poolFees",
+                  "nameLocation": "678:9:0",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 106,
+                  "src": "662:25:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint24_$dyn_memory_ptr",
+                    "typeString": "uint24[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 38,
+                      "name": "uint24",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "662:6:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint24",
+                        "typeString": "uint24"
+                      }
+                    },
+                    "id": 39,
+                    "nodeType": "ArrayTypeName",
+                    "src": "662:8:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint24_$dyn_storage_ptr",
+                      "typeString": "uint24[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "619:74:0"
             },
-            {
-              "internalType": "string",
-              "name": "_lenderSymbol",
-              "type": "string"
+            "returnParameters": {
+              "id": 44,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 43,
+                  "mutability": "mutable",
+                  "name": "_path",
+                  "nameLocation": "725:5:0",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 106,
+                  "src": "712:18:0",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_memory_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 42,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "712:5:0",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "711:20:0"
             },
-            {
-              "internalType": "address",
-              "name": "_loanAsset",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_loanAmount",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bytes[]",
-              "name": "_ops",
-              "type": "bytes[]"
-            }
-          ],
-          "internalType": "struct AbstractTrader.Strategy",
-          "name": "_strategy",
-          "type": "tuple"
-        }
-      ],
-      "name": "performStrategy",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "stateMutability": "payable",
-      "type": "receive"
-    }
-  ],
-  "bytecode": "0x60806040523480156200001157600080fd5b50604051620014af380380620014af83398101604081905262000034916200014e565b60016000819055600380546001600160a01b03199081163317909155600480546001600160a01b038581169184169190911782558354908616921682179092556040805163026b1d5f60e01b81529051919263026b1d5f928282019260209290829003018186803b158015620000a957600080fd5b505afa158015620000be573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190620000e491906200012a565b600280546001600160a01b0319166001600160a01b039290921691909117905550620001859050565b80516001600160a01b03811681146200012557600080fd5b919050565b6000602082840312156200013c578081fd5b62000147826200010d565b9392505050565b6000806040838503121562000161578081fd5b6200016c836200010d565b91506200017c602084016200010d565b90509250929050565b61131a80620001956000396000f3fe60806040526004361061006e5760003560e01c8063ab6431751161004b578063ab64317514610104578063b2bdfa7b14610124578063d0e30db014610144578063dd6c68a11461015a57005b80631b11d0ff146100775780631d30ced9146100ac57806371973c6a146100e457005b3661007557005b005b34801561008357600080fd5b50610097610092366004610c58565b61017a565b60405190151581526020015b60405180910390f35b3480156100b857600080fd5b506004546100cc906001600160a01b031681565b6040516001600160a01b0390911681526020016100a3565b3480156100f057600080fd5b506001546100cc906001600160a01b031681565b34801561011057600080fd5b506002546100cc906001600160a01b031681565b34801561013057600080fd5b506003546100cc906001600160a01b031681565b61014c610482565b6040519081526020016100a3565b34801561016657600080fd5b50610075610175366004610e9e565b610521565b6040516370a0823160e01b815230600482015260009086906001600160a01b038916906370a082319060240160206040518083038186803b1580156101be57600080fd5b505afa1580156101d2573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101f69190610fa0565b10156102425760405162461bcd60e51b815260206004820152601660248201527510550e88131bd85b88151c985b9cd9995c8811985a5b60521b60448201526064015b60405180910390fd5b600061025083850185610e9e565b90506000600260009054906101000a90046001600160a01b03166001600160a01b0316636a99c0366040518163ffffffff1660e01b815260040160206040518083038186803b1580156102a257600080fd5b505afa1580156102b6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102da9190610f79565b6102ed906001600160801b031689611221565b905060005b826020015160ff168160ff1610156103b357600061033d8460a001518360ff168151811061033057634e487b7160e01b600052603260045260246000fd5b6020026020010151610604565b9050600061034a8261068f565b9050806103568361068f565b101561039e576020808301516040516001600160a01b0390911681527f710ba6b8861f3d576cbf825374eb86fe1ee210ff7a129d3e75556fdac5fb8482910160405180910390a15b505080806103ab90611280565b9150506102f2565b5060025460405163095ea7b360e01b81526001600160a01b03918216600482015260248101839052908a169063095ea7b390604401602060405180830381600087803b15801561040257600080fd5b505af1158015610416573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061043a9190610d90565b5081516040517ff005264b99e0336cdb3828764139dec331258872429c73d6e49841cf5c542f7e9161046b9161102d565b60405180910390a150600198975050505050505050565b6003546000906001600160a01b031633146104cc5760405162461bcd60e51b815260206004820152600a60248201526927b7363c9027bbb732b960b11b6044820152606401610239565b6000341161051c5760405162461bcd60e51b815260206004820152601b60248201527f47617320636f73747320617265206869676820636f6d65206f6e2100000000006044820152606401610239565b504790565b6003546001600160a01b031633146105685760405162461bcd60e51b815260206004820152600a60248201526927b7363c9027bbb732b960b11b6044820152606401610239565b60008160405160200161057b9190611040565b60408051601f1981840301815290829052600254606085015160808601516310ac2ddf60e21b85529294506001600160a01b03909116926342b0b77c926105ce9230929091908790600090600401610fe4565b600060405180830381600087803b1580156105e857600080fd5b505af11580156105fc573d6000803e3d6000fd5b505050505050565b61064d6040518060e001604052806060815260200160006001600160a01b0316815260200160008152602001600081526020016000815260200160608152602001606081525090565b818060200190518101906106619190610db0565b60c088015260a08701526080860152606085015260408401526001600160a01b031660208301528152919050565b60008160a001516000815181106106b657634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031663095ea7b3836020015184604001516040518363ffffffff1660e01b81526004016107079291906001600160a01b03929092168252602082015260400190565b602060405180830381600087803b15801561072157600080fd5b505af1158015610735573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107599190610d90565b50604080518082019091526005815264554e49563360d81b602091820152825180519101207fdb0d6129523046881306c88d1d1077274db3a7a3227f51a33709d203f302049c14156109905781602001516001600160a01b031663414bf3896040518061010001604052808560a001516000815181106107e957634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031681526020018560a0015160018760a00151516108169190611239565b8151811061083457634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031681526020018560c0015160008151811061086f57634e487b7160e01b600052603260045260246000fd5b602002602001015162ffffff168152602001306001600160a01b03168152602001428152602001856040015181526020018560600151815260200160006001600160a01b03168152506040518263ffffffff1660e01b8152600401610938919081516001600160a01b03908116825260208084015182169083015260408084015162ffffff16908301526060808401518216908301526080808401519083015260a0838101519083015260c0808401519083015260e09283015116918101919091526101000190565b602060405180830381600087803b15801561095257600080fd5b505af1158015610966573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061098a9190610fa0565b92915050565b81602001516001600160a01b03166338ed1739836040015184606001518560a0015130426040518663ffffffff1660e01b81526004016109d495949392919061110b565b600060405180830381600087803b1580156109ee57600080fd5b505af1158015610a02573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052610a2a9190810190610cfd565b600181518110610a4a57634e487b7160e01b600052603260045260246000fd5b602002602001015190505b919050565b6000610a6d610a68846111f9565b6111a4565b9050828152838383011115610a8157600080fd5b828260208301376000602084830101529392505050565b8035610a55816112cc565b8051610a55816112cc565b600082601f830112610abe578081fd5b81516020610ace610a68836111d5565b80838252828201915082860187848660051b8901011115610aed578586fd5b855b85811015610b14578151610b02816112cc565b84529284019290840190600101610aef565b5090979650505050505050565b600082601f830112610b31578081fd5b81356020610b41610a68836111d5565b80838252828201915082860187848660051b8901011115610b60578586fd5b855b85811015610b1457813567ffffffffffffffff811115610b80578788fd5b8801603f81018a13610b90578788fd5b610ba18a8783013560408401610a5a565b8552509284019290840190600101610b62565b600082601f830112610bc4578081fd5b81516020610bd4610a68836111d5565b80838252828201915082860187848660051b8901011115610bf3578586fd5b855b85811015610b1457815162ffffff81168114610c0f578788fd5b84529284019290840190600101610bf5565b600082601f830112610c31578081fd5b610c4083833560208501610a5a565b9392505050565b803560ff81168114610a5557600080fd5b60008060008060008060a08789031215610c70578182fd5b8635610c7b816112cc565b955060208701359450604087013593506060870135610c99816112cc565b9250608087013567ffffffffffffffff80821115610cb5578384fd5b818901915089601f830112610cc8578384fd5b813581811115610cd6578485fd5b8a6020828501011115610ce7578485fd5b6020830194508093505050509295509295509295565b60006020808385031215610d0f578182fd5b825167ffffffffffffffff811115610d25578283fd5b8301601f81018513610d35578283fd5b8051610d43610a68826111d5565b80828252848201915084840188868560051b8701011115610d62578687fd5b8694505b83851015610d84578051835260019490940193918501918501610d66565b50979650505050505050565b600060208284031215610da1578081fd5b81518015158114610c40578182fd5b600080600080600080600060e0888a031215610dca578485fd5b875167ffffffffffffffff80821115610de1578687fd5b818a0191508a601f830112610df4578687fd5b8151610e02610a68826111f9565b8181528c6020838601011115610e16578889fd5b610e27826020830160208701611250565b9950610e37905060208b01610aa3565b975060408a0151965060608a0151955060808a0151945060a08a0151915080821115610e61578283fd5b610e6d8b838c01610aae565b935060c08a0151915080821115610e82578283fd5b50610e8f8a828b01610bb4565b91505092959891949750929550565b600060208284031215610eaf578081fd5b813567ffffffffffffffff80821115610ec6578283fd5b9083019060c08286031215610ed9578283fd5b610ee161117b565b823582811115610eef578485fd5b610efb87828601610c21565b825250610f0a60208401610c47565b6020820152604083013582811115610f20578485fd5b610f2c87828601610c21565b604083015250610f3e60608401610a98565b60608201526080830135608082015260a083013582811115610f5e578485fd5b610f6a87828601610b21565b60a08301525095945050505050565b600060208284031215610f8a578081fd5b81516001600160801b0381168114610c40578182fd5b600060208284031215610fb1578081fd5b5051919050565b60008151808452610fd0816020860160208601611250565b601f01601f19169290920160200192915050565b6001600160a01b038681168252851660208201526040810184905260a06060820181905260009061101790830185610fb8565b905061ffff831660808301529695505050505050565b602081526000610c406020830184610fb8565b60006020808352835160c08285015261105c60e0850182610fb8565b905060ff828601511660408501526040850151601f19808684030160608701526110868383610fb8565b60608801516001600160a01b031660808881019190915288015160a088810191909152880151878203830160c089015280518083529194508501925084840190600581901b85018601875b828110156110fd57848783030184526110eb828751610fb8565b958801959388019391506001016110d1565b509998505050505050505050565b600060a082018783526020878185015260a0604085015281875180845260c0860191508289019350845b8181101561115a5784516001600160a01b031683529383019391830191600101611135565b50506001600160a01b03969096166060850152505050608001529392505050565b60405160c0810167ffffffffffffffff8111828210171561119e5761119e6112b6565b60405290565b604051601f8201601f1916810167ffffffffffffffff811182821017156111cd576111cd6112b6565b604052919050565b600067ffffffffffffffff8211156111ef576111ef6112b6565b5060051b60200190565b600067ffffffffffffffff821115611213576112136112b6565b50601f01601f191660200190565b60008219821115611234576112346112a0565b500190565b60008282101561124b5761124b6112a0565b500390565b60005b8381101561126b578181015183820152602001611253565b8381111561127a576000848401525b50505050565b600060ff821660ff811415611297576112976112a0565b60010192915050565b634e487b7160e01b600052601160045260246000fd5b634e487b7160e01b600052604160045260246000fd5b6001600160a01b03811681146112e157600080fd5b5056fea2646970667358221220efe7bbeb3e435bc52953ae141465ed2d29f2a8cbf0399a6f374f75618662c19064736f6c63430008040033",
-  "deployedBytecode": "0x60806040526004361061006e5760003560e01c8063ab6431751161004b578063ab64317514610104578063b2bdfa7b14610124578063d0e30db014610144578063dd6c68a11461015a57005b80631b11d0ff146100775780631d30ced9146100ac57806371973c6a146100e457005b3661007557005b005b34801561008357600080fd5b50610097610092366004610c58565b61017a565b60405190151581526020015b60405180910390f35b3480156100b857600080fd5b506004546100cc906001600160a01b031681565b6040516001600160a01b0390911681526020016100a3565b3480156100f057600080fd5b506001546100cc906001600160a01b031681565b34801561011057600080fd5b506002546100cc906001600160a01b031681565b34801561013057600080fd5b506003546100cc906001600160a01b031681565b61014c610482565b6040519081526020016100a3565b34801561016657600080fd5b50610075610175366004610e9e565b610521565b6040516370a0823160e01b815230600482015260009086906001600160a01b038916906370a082319060240160206040518083038186803b1580156101be57600080fd5b505afa1580156101d2573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101f69190610fa0565b10156102425760405162461bcd60e51b815260206004820152601660248201527510550e88131bd85b88151c985b9cd9995c8811985a5b60521b60448201526064015b60405180910390fd5b600061025083850185610e9e565b90506000600260009054906101000a90046001600160a01b03166001600160a01b0316636a99c0366040518163ffffffff1660e01b815260040160206040518083038186803b1580156102a257600080fd5b505afa1580156102b6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102da9190610f79565b6102ed906001600160801b031689611221565b905060005b826020015160ff168160ff1610156103b357600061033d8460a001518360ff168151811061033057634e487b7160e01b600052603260045260246000fd5b6020026020010151610604565b9050600061034a8261068f565b9050806103568361068f565b101561039e576020808301516040516001600160a01b0390911681527f710ba6b8861f3d576cbf825374eb86fe1ee210ff7a129d3e75556fdac5fb8482910160405180910390a15b505080806103ab90611280565b9150506102f2565b5060025460405163095ea7b360e01b81526001600160a01b03918216600482015260248101839052908a169063095ea7b390604401602060405180830381600087803b15801561040257600080fd5b505af1158015610416573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061043a9190610d90565b5081516040517ff005264b99e0336cdb3828764139dec331258872429c73d6e49841cf5c542f7e9161046b9161102d565b60405180910390a150600198975050505050505050565b6003546000906001600160a01b031633146104cc5760405162461bcd60e51b815260206004820152600a60248201526927b7363c9027bbb732b960b11b6044820152606401610239565b6000341161051c5760405162461bcd60e51b815260206004820152601b60248201527f47617320636f73747320617265206869676820636f6d65206f6e2100000000006044820152606401610239565b504790565b6003546001600160a01b031633146105685760405162461bcd60e51b815260206004820152600a60248201526927b7363c9027bbb732b960b11b6044820152606401610239565b60008160405160200161057b9190611040565b60408051601f1981840301815290829052600254606085015160808601516310ac2ddf60e21b85529294506001600160a01b03909116926342b0b77c926105ce9230929091908790600090600401610fe4565b600060405180830381600087803b1580156105e857600080fd5b505af11580156105fc573d6000803e3d6000fd5b505050505050565b61064d6040518060e001604052806060815260200160006001600160a01b0316815260200160008152602001600081526020016000815260200160608152602001606081525090565b818060200190518101906106619190610db0565b60c088015260a08701526080860152606085015260408401526001600160a01b031660208301528152919050565b60008160a001516000815181106106b657634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031663095ea7b3836020015184604001516040518363ffffffff1660e01b81526004016107079291906001600160a01b03929092168252602082015260400190565b602060405180830381600087803b15801561072157600080fd5b505af1158015610735573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906107599190610d90565b50604080518082019091526005815264554e49563360d81b602091820152825180519101207fdb0d6129523046881306c88d1d1077274db3a7a3227f51a33709d203f302049c14156109905781602001516001600160a01b031663414bf3896040518061010001604052808560a001516000815181106107e957634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031681526020018560a0015160018760a00151516108169190611239565b8151811061083457634e487b7160e01b600052603260045260246000fd5b60200260200101516001600160a01b031681526020018560c0015160008151811061086f57634e487b7160e01b600052603260045260246000fd5b602002602001015162ffffff168152602001306001600160a01b03168152602001428152602001856040015181526020018560600151815260200160006001600160a01b03168152506040518263ffffffff1660e01b8152600401610938919081516001600160a01b03908116825260208084015182169083015260408084015162ffffff16908301526060808401518216908301526080808401519083015260a0838101519083015260c0808401519083015260e09283015116918101919091526101000190565b602060405180830381600087803b15801561095257600080fd5b505af1158015610966573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061098a9190610fa0565b92915050565b81602001516001600160a01b03166338ed1739836040015184606001518560a0015130426040518663ffffffff1660e01b81526004016109d495949392919061110b565b600060405180830381600087803b1580156109ee57600080fd5b505af1158015610a02573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052610a2a9190810190610cfd565b600181518110610a4a57634e487b7160e01b600052603260045260246000fd5b602002602001015190505b919050565b6000610a6d610a68846111f9565b6111a4565b9050828152838383011115610a8157600080fd5b828260208301376000602084830101529392505050565b8035610a55816112cc565b8051610a55816112cc565b600082601f830112610abe578081fd5b81516020610ace610a68836111d5565b80838252828201915082860187848660051b8901011115610aed578586fd5b855b85811015610b14578151610b02816112cc565b84529284019290840190600101610aef565b5090979650505050505050565b600082601f830112610b31578081fd5b81356020610b41610a68836111d5565b80838252828201915082860187848660051b8901011115610b60578586fd5b855b85811015610b1457813567ffffffffffffffff811115610b80578788fd5b8801603f81018a13610b90578788fd5b610ba18a8783013560408401610a5a565b8552509284019290840190600101610b62565b600082601f830112610bc4578081fd5b81516020610bd4610a68836111d5565b80838252828201915082860187848660051b8901011115610bf3578586fd5b855b85811015610b1457815162ffffff81168114610c0f578788fd5b84529284019290840190600101610bf5565b600082601f830112610c31578081fd5b610c4083833560208501610a5a565b9392505050565b803560ff81168114610a5557600080fd5b60008060008060008060a08789031215610c70578182fd5b8635610c7b816112cc565b955060208701359450604087013593506060870135610c99816112cc565b9250608087013567ffffffffffffffff80821115610cb5578384fd5b818901915089601f830112610cc8578384fd5b813581811115610cd6578485fd5b8a6020828501011115610ce7578485fd5b6020830194508093505050509295509295509295565b60006020808385031215610d0f578182fd5b825167ffffffffffffffff811115610d25578283fd5b8301601f81018513610d35578283fd5b8051610d43610a68826111d5565b80828252848201915084840188868560051b8701011115610d62578687fd5b8694505b83851015610d84578051835260019490940193918501918501610d66565b50979650505050505050565b600060208284031215610da1578081fd5b81518015158114610c40578182fd5b600080600080600080600060e0888a031215610dca578485fd5b875167ffffffffffffffff80821115610de1578687fd5b818a0191508a601f830112610df4578687fd5b8151610e02610a68826111f9565b8181528c6020838601011115610e16578889fd5b610e27826020830160208701611250565b9950610e37905060208b01610aa3565b975060408a0151965060608a0151955060808a0151945060a08a0151915080821115610e61578283fd5b610e6d8b838c01610aae565b935060c08a0151915080821115610e82578283fd5b50610e8f8a828b01610bb4565b91505092959891949750929550565b600060208284031215610eaf578081fd5b813567ffffffffffffffff80821115610ec6578283fd5b9083019060c08286031215610ed9578283fd5b610ee161117b565b823582811115610eef578485fd5b610efb87828601610c21565b825250610f0a60208401610c47565b6020820152604083013582811115610f20578485fd5b610f2c87828601610c21565b604083015250610f3e60608401610a98565b60608201526080830135608082015260a083013582811115610f5e578485fd5b610f6a87828601610b21565b60a08301525095945050505050565b600060208284031215610f8a578081fd5b81516001600160801b0381168114610c40578182fd5b600060208284031215610fb1578081fd5b5051919050565b60008151808452610fd0816020860160208601611250565b601f01601f19169290920160200192915050565b6001600160a01b038681168252851660208201526040810184905260a06060820181905260009061101790830185610fb8565b905061ffff831660808301529695505050505050565b602081526000610c406020830184610fb8565b60006020808352835160c08285015261105c60e0850182610fb8565b905060ff828601511660408501526040850151601f19808684030160608701526110868383610fb8565b60608801516001600160a01b031660808881019190915288015160a088810191909152880151878203830160c089015280518083529194508501925084840190600581901b85018601875b828110156110fd57848783030184526110eb828751610fb8565b958801959388019391506001016110d1565b509998505050505050505050565b600060a082018783526020878185015260a0604085015281875180845260c0860191508289019350845b8181101561115a5784516001600160a01b031683529383019391830191600101611135565b50506001600160a01b03969096166060850152505050608001529392505050565b60405160c0810167ffffffffffffffff8111828210171561119e5761119e6112b6565b60405290565b604051601f8201601f1916810167ffffffffffffffff811182821017156111cd576111cd6112b6565b604052919050565b600067ffffffffffffffff8211156111ef576111ef6112b6565b5060051b60200190565b600067ffffffffffffffff821115611213576112136112b6565b50601f01601f191660200190565b60008219821115611234576112346112a0565b500190565b60008282101561124b5761124b6112a0565b500390565b60005b8381101561126b578181015183820152602001611253565b8381111561127a576000848401525b50505050565b600060ff821660ff811415611297576112976112a0565b60010192915050565b634e487b7160e01b600052601160045260246000fd5b634e487b7160e01b600052604160045260246000fd5b6001600160a01b03811681146112e157600080fd5b5056fea2646970667358221220efe7bbeb3e435bc52953ae141465ed2d29f2a8cbf0399a6f374f75618662c19064736f6c63430008040033",
-  "linkReferences": {},
-  "deployedLinkReferences": {}
+            "scope": 107,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "internal"
+          }
+        ],
+        "abstract": true,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          107
+        ],
+        "name": "AbstractTrader",
+        "nameLocation": "117:14:0",
+        "scope": 108,
+        "usedErrors": []
+      }
+    ],
+    "license": "AGPL-3.0"
+  }
 }

@@ -64,12 +64,18 @@ module.exports = class UniswapV3Api {
       const tokenA_name = await tokenAInstance.name();
       const tokenB_name = await tokenBInstance.name();
 
+      // console.log(
+      //   'tokenA_name: ',tokenA_name,
+      //   'tokenB_name: ',tokenB_name,
+      // )
+
       const TOKEN_A = new Token( chainId , tokenA , tokenA_decimals, tokenA_symbol, tokenA_name);
       const TOKEN_B = new Token( chainId , tokenB , tokenB_decimals, tokenB_symbol,tokenB_name);
       
-      const _amountOut = CurrencyAmount.fromRawAmount(TOKEN_A, JSBI.BigInt(tokenA_amount));
+      const _amountOutFromRaw= CurrencyAmount.fromRawAmount(TOKEN_A, JSBI.BigInt(tokenA_amount));
+
       const route = await router.route(
-        _amountOut,
+        _amountOutFromRaw,
         TOKEN_B,
         TradeType.EXACT_INPUT,
         {
@@ -86,9 +92,10 @@ module.exports = class UniswapV3Api {
         (error) => { return (error) }
       );
 
+
       // console.log('route: ',route)
       const [ amountOut, _routeDataFormated ] = this.chooseRouteAndSetPrice(tokenA, tokenB, route);
-      console.log('[ amountOut, _routeDataFormated ] : ',[ amountOut, _routeDataFormated ] )
+      // console.log('[ amountOut, _routeDataFormated ] : ',[ amountOut, _routeDataFormated ] )
       return {amountOut, _routeDataFormated};
     }
   }

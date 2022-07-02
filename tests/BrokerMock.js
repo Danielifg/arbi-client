@@ -13,11 +13,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // polygon
-const AAVE =  "0xD6DF932A45C0f255f85145f286eA0b292B21C90B"; //18 decimals
-const WETH =  "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"; // 18 decimals
-const DAI  =  "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"; //18 decimals
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
-const USDC= "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // 6 decimals
+const AAVE =  "0xD6DF932A45C0f255f85145f286eA0b292B21C90B"; //18 decimals
+const DAI =  "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063"; //18 decimals
+const USDC =  "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174"; // 6 decimals
+const USDT =  "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"; // 6 decimals
+const WBTC =  "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6"; // 8 decimals
+const WETH =  "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619"; // 18 decimals
+const WMATIC =  "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"; // 18 decimals
 const oneINCH = "0x9c2C5fd7b07E95EE044DDeba0E97a665F142394f";
 
 
@@ -55,22 +58,23 @@ function _postStrategy(strategy){
 
 const _testStrategy = [
     { 
-      loanInfo:{ amount: 100, asset: AAVE },
-      strategies:  [
-            {
-              dexSymbol: { dexA: 'uniswap', dexB: 'sushiswap' },
-              tokenA: USDC,
-              tokenB: AAVE,
-              pool: {
-                poolA: '0xBD934A7778771A7E2D9bf80596002a214D8C9304',
-                poolB: '0x0e44cEb592AcFC5D3F09D996302eB4C499ff8c10'
-              },
-              priceA: 1223.84,
-              priceB: 1238.59
-            },
-          ]
+      loanInfo:{ amount: 1000, asset: USDC },
+      strategies:   [
+        {
+          dexSymbol: { dexA: 'uniswap', dexB: 'uniswap' },
+          tokenA: USDC,
+          tokenB: oneINCH ,
+          pool: {
+            poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
+            poolB: '0x167384319B41F7094e62f7506409Eb38079AbfF8'
+          },
+          priceA: 2272.64,
+          priceB: 2295.57
+        }
+      ]     
     }
   ]
+
 
 const _perform = () =>  {
   _testStrategy.forEach(str => {
