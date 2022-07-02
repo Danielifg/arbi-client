@@ -103,6 +103,7 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     const Controller = await  _getController();
     console.log('DATA ====>> req',req);
     const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
+    console.log('DATA ====>> payload in ',payload);
 
     const provider = await Controller.jsController.getProvider();
     
