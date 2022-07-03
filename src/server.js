@@ -102,10 +102,8 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     console.log(' calling /v1/arbitrage/matic...');
     const Controller = await  _getController();
     const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
-    console.log('DATA ====>> payload in ',payload);
+    // console.log('DATA ====>> payload in ',payload);
 
-    const provider = await Controller.jsController.getProvider();
-    
     // params: strategy ID & req payload
     const Strategy = await Controller.jsController.formatStrategy('001', payload);
     console.log('Strategy provider: ', Strategy);
