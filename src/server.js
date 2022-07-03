@@ -17,11 +17,10 @@ const ERC20 = require( './abi/ERC20.json');
 // const write_node = `https://twilight-icy-log.matic.quiknode.pro/${process.env.NODE_POLY_KEY}`;
 // const write_node = `https://twilight-icy-log.matic.quiknode.pro/2d49e0fc113dcba25e5a127bc74a6545b1a9f440`;
 const ALCHEMY_FREE_NODE = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjCOWrg-P0VBZbvfr4EqNpc";
-
-const write_node =`http://localhost:8545`;
+const LOCAL_FORK =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
 const {getTraderContract} = require('./utils/getContracts');
-const fork_deployment_address = "0xb0761134896a55e5198780d87c13084db004645a";
+const fork_deployment_address = "0xb0761134896A55E5198780D87C13084Db004645a";
 
 const port = 3001;
 const app = express();
@@ -33,7 +32,8 @@ app.use(express.static('public'));
 /* ** ********* **** TRADE SPECS  **** ** ********* ****/
 /* ** ********* **** ** ********* **** ** ********* ****/
 
-// CANNOT BE GREATER THAN 3000
+// CANNOT BE GREATER THAN 3000 
+ const NODE = process.env.PROD ? ALCHEMY_FREE_NODE: LOCAL_FORK ;
  const slippageTolerance = 300; // 3000 /10000 = 0.3
 
 
@@ -50,7 +50,7 @@ async function _getController(){
 
     /** Ethers provider */
     // const provider = await new ethers.providers.JsonRpcProvider( write_node );    
-    const provider = new ethers.providers.JsonRpcProvider(ALCHEMY_FREE_NODE);
+    const provider = new ethers.providers.JsonRpcProvider(NODE);
 
     const signer = new Wallet (  process.env.PRIVATE_KEY_POC, provider );
 
@@ -101,8 +101,8 @@ async function _getController(){
 app.route('/v1/arbitrage/matic').post( async (req, res) => { 
     console.log(' calling /v1/arbitrage/matic...');
     const Controller = await  _getController();
-    // const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
-    console.log('DATA ====>> payload in ',req.body.data);
+    const payload = req.body && JSON.parse(JSON.stringify(req.body.data));
+    console.log('DATA ====>> payload in ',payload);
 
     const provider = await Controller.jsController.getProvider();
     
@@ -111,11 +111,11 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     console.log('Strategy provider: ', Strategy);
 
     const contractInstance = await Controller.contractInstance;
-    //  const tx =  await contractInstance.performStrategy(Strategy,
-    //     {
-    //         gasLimit:500000
-    //     })
-    //  console.log('tx',tx)
+     const tx =  await contractInstance.performStrategy(Strategy,
+        {
+            gasLimit:500000
+        })
+     console.log('tx',tx)
     //     .send({
     //         from: Controller.adminWallet.address,
     //         gasLimit: 5000000,

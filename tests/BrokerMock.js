@@ -61,6 +61,22 @@ const _testStrategy = [
       loanInfo:{ amount: 1000, asset: USDC },
       strategies:   [
         {
+          dexSymbol: { dexA: 'sushiswap', dexB: 'gravityfinance' },
+          tokenA: USDC,
+          tokenB: oneINCH ,
+          pool: {
+            poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
+            poolB: '0x167384319B41F7094e62f7506409Eb38079AbfF8'
+          },
+          priceA: 2121.1,
+          priceB: 2295.57
+        }
+      ]     
+    },
+    { 
+      loanInfo:{ amount: 1000, asset: USDC },
+      strategies:   [
+        {
           dexSymbol: { dexA: 'uniswap', dexB: 'uniswap' },
           tokenA: USDC,
           tokenB: oneINCH ,
@@ -68,8 +84,40 @@ const _testStrategy = [
             poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
             poolB: '0x167384319B41F7094e62f7506409Eb38079AbfF8'
           },
-          priceA: 2272.64,
-          priceB: 2295.57
+          priceA: 2372.64,
+          priceB: 2495.57
+        }
+      ]     
+    },
+    { 
+      loanInfo:{ amount: 1000, asset: USDC },
+      strategies:   [
+        {
+          dexSymbol: { dexA: 'quick', dexB: 'uniswap' },
+          tokenA: USDC,
+          tokenB: DAI ,
+          pool: {
+            poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
+            poolB: '0x167384319B41F7094e62f7506409Eb38079AbfF8'
+          },
+          priceA: 2572.64,
+          priceB: 2695.57
+        }
+      ]     
+    },
+    { 
+      loanInfo:{ amount: 100, asset: WETH },
+      strategies:   [
+        {
+          dexSymbol: { dexA: 'dfyn', dexB: 'uniswap' },
+          tokenA: WETH,
+          tokenB: oneINCH ,
+          pool: {
+            poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
+            poolB: '0x167384319B41F7094e62f7506409Eb38079AbfF8'
+          },
+          priceA: 2772.64,
+          priceB: 2895.57
         }
       ]     
     }
