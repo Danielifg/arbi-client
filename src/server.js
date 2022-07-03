@@ -20,7 +20,7 @@ const ALCHEMY_FREE_NODE = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjC
 const LOCAL_FORK =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
 const {getTraderContract} = require('./utils/getContracts');
-const fork_deployment_address = "0xb0761134896A55E5198780D87C13084Db004645a";
+const fork_deployment_address = "0x69d2ffc1927146Dc0Fc18C7e41b8Bdd2167865DD";
 
 const port = 3001;
 const app = express();
@@ -111,7 +111,7 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     const contractInstance = await Controller.contractInstance;
      const tx =  await contractInstance.performStrategy(Strategy,
         {
-            gasLimit:500000
+            gasLimit:400000
         })
      console.log('tx',tx)
     //     .send({
