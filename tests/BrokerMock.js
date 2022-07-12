@@ -41,6 +41,20 @@ function _heartBeat(){
     });
 }
 
+function _depositToStrategy(){
+  return new Promise((resolve,reject) => {
+      const url = 'http://localhost:3002/v1/arbitrage/matic/deposit';
+          return axios.post(url, {
+              requestOptions,
+          }).then((response) => {
+              console.log(response.data)
+              return response.data;
+          },(error) => {
+            console.error('Arbi client service error - ', error);
+          });
+      });
+}
+
 function _postStrategy(strategy){
     return new Promise((resolve,reject) => {
         const url = 'http://localhost:3002/v1/arbitrage/matic';
@@ -58,11 +72,11 @@ function _postStrategy(strategy){
 
 const _testStrategy = [
     { 
-      loanInfo:{ amount: 1000, asset: USDC },
+      loanInfo:{ amount: 1000, asset: WMATIC },
       strategies:   [
         {
           dexSymbol: { dexA: 'uniswap', dexB: 'gravityfinance' },
-          tokenA: WETH,
+          tokenA: WMATIC,
           tokenB: AAVE ,
           pool: {
             poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
@@ -77,9 +91,10 @@ const _testStrategy = [
 
 
 const _perform = () =>  {
-  _testStrategy.forEach(str => {
-    console.log('2')
-    _postStrategy( str )
-  });
+  _depositToStrategy();
+  // _testStrategy.forEach(str => {
+  //   console.log('2')
+  //   _postStrategy( str )
+  // });
 }
 _perform();

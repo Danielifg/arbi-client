@@ -45,19 +45,19 @@ module.exports = class ArbitrageController {
     }
 
     async deposit(wallet,_depositAmount){
-        let amountInEther = ethers.utils.formatEther(_depositAmount.toString());
         let tx = { 
           to: this.ArbitrageContract.address,
-          value: ethers.utils.parseEther(amountInEther)
+          value:_depositAmount.toString(),
+          gasPrice: 44000000000
         };
     
         await wallet.sendTransaction(tx)
         .then((txObj) => {console.log('txHash', txObj.hash)})
-        .catch(err => console.log(err));
+        .catch(err => console.log('ERROR',err));
       
         const traderBalance = await this.provider.getBalance(this.ArbitrageContract.address);
         console.log('Arbitrage contract Balance: ',traderBalance.toString());
-        return traderBalance;
+        return traderBalance.toString();
     }
     
     /**
@@ -225,7 +225,7 @@ module.exports = class ArbitrageController {
             const path = _isSecondSwap ? [_tokenB,_tokenA] : [_tokenA,_tokenB];
             
             console.log('(path, _amountIn):', path, _amountIn);
-            
+
             const route = await this._getUniswapV3Route(path, _amountIn).then( route => {
                 _path =  route._routeDataFormated.path;
                 _poolFees = route._routeDataFormated.poolFees;

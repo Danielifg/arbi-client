@@ -46,12 +46,14 @@ app.use(express.static('public'));
  * @returns Arbi-protocol contract instance
  */
 async function _getController(){
-    console.log('controller running.');    
+    console.log('getting controller()');    
     const chainId = 137;
 
     /** Ethers provider */
     // const provider = await new ethers.providers.JsonRpcProvider( write_node );    
-    const provider = new ethers.providers.JsonRpcProvider(read_node);
+    const provider = new ethers.providers.JsonRpcProvider(
+        ALCHEMY_FREE_NODE
+    );
 
     const signer = new Wallet (  process.env.PRIVATE_KEY_POC, provider );
 
@@ -98,6 +100,15 @@ async function _getController(){
 º  await contract.someMethodThatRequiresSigning();
 
  */
+app.route('/v1/arbitrage/matic/deposit').post( async (req, res) => { 
+    console.log(' calling deposit...');
+    const Controller = await  _getController();
+    const wallet = await Controller.adminWallet;
+    const thirtyDlls = '52807400000000000000';
+    const balance = await Controller.jsController.deposit(wallet,BigNumber.from(thirtyDlls));
+    console.log('ContractBalance: ',balance.toString());
+})
+
 
 app.route('/v1/arbitrage/matic').post( async (req, res) => { 
     console.log(' calling /v1/arbitrage/matic...');
@@ -117,12 +128,12 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
     console.log('gasFees: ',gasFees)
 
     const contractInstance = await Controller.contractInstance;
-    //  const tx =  await contractInstance.performStrategy(Strategy,
-    //     {
-    //         gasPrice: gasFees.gasPrice.toString(),
-    //         gasLimit: 500000
-    //     })
-    //  console.log('tx',tx)
+     const tx =  await contractInstance.performStrategy(Strategy,
+        {
+            gasPrice: gasFees.gasPrice.toString(),
+            gasLimit: 500000
+        })
+     console.log('tx',tx)
         // .send({
         //     from: Controller.adminWallet.address,
         //     gasLimit: 5000000,
