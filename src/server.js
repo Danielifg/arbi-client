@@ -133,7 +133,8 @@ app.route('/v1/arbitrage/matic').post( async (req, res) => {
             gasPrice: gasFees.gasPrice.toString(),
             gasLimit: 500000
         })
-     console.log('tx',tx)
+     console.log('tx=======>',tx);
+     console.log('tx',await tx.wait())
         // .send({
         //     from: Controller.adminWallet.address,
         //     gasLimit: 5000000,

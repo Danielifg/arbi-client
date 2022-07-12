@@ -70,7 +70,7 @@ function _postStrategy(strategy){
         });
 }
 
-const _testStrategy = [
+const _testStrategy = 
     { 
       loanInfo:{ amount: 1000, asset: WMATIC },
       strategies:   [
@@ -86,15 +86,12 @@ const _testStrategy = [
           priceB: 2295.57
         }
       ]     
-    },
-  ]
+    }
 
 
 const _perform = () =>  {
-  _depositToStrategy();
-  // _testStrategy.forEach(str => {
-  //   console.log('2')
-  //   _postStrategy( str )
-  // });
+  // _depositToStrategy();
+    _postStrategy( _testStrategy )
+
 }
 _perform();
