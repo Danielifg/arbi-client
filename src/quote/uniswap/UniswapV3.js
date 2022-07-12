@@ -74,6 +74,12 @@ module.exports = class UniswapV3Api {
       
       const _amountOutFromRaw= CurrencyAmount.fromRawAmount(TOKEN_A, JSBI.BigInt(tokenA_amount));
 
+      // console.log(
+      //   'tokenA_name: ',TOKEN_A,'\n',
+      //   'tokenB_name: ',TOKEN_B,'\n',
+      //   '_amountOutFromRaw',_amountOutFromRaw
+      // )
+
       const route = await router.route(
         _amountOutFromRaw,
         TOKEN_B,
@@ -88,14 +94,13 @@ module.exports = class UniswapV3Api {
           deadline: Math.floor(Date.now()/1000 + 1800)
         }
       ).then(
-        (res) => {  return res;} ,
-        (error) => { return (error) }
-      );
+        (res) => { return res } ,
+        (error) => { console.log('UNIV· API ERROR ::',error) }
+      ).catch(error =>{
+        console.log('UNIV· API ERROR ::',error) 
+      });
 
-
-      // console.log('route: ',route)
       const [ amountOut, _routeDataFormated ] = this.chooseRouteAndSetPrice(tokenA, tokenB, route);
-      // console.log('[ amountOut, _routeDataFormated ] : ',[ amountOut, _routeDataFormated ] )
       return {amountOut, _routeDataFormated};
     }
   }

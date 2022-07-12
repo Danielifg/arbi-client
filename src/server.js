@@ -20,9 +20,10 @@ const ALCHEMY_FREE_NODE = "https://polygon-mainnet.g.alchemy.com/v2/5-5xZ9rGcQjC
 const LOCAL_FORK =`http://localhost:8545`;
 const read_node = "https://polygon-rpc.com/";
 const {getTraderContract} = require('./utils/getContracts');
+
 const fork_deployment_address = "0x69d2ffc1927146Dc0Fc18C7e41b8Bdd2167865DD";
 
-const port = 3001;
+const port = 3002;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -35,7 +36,7 @@ app.use(express.static('public'));
 // CANNOT BE GREATER THAN 3000 
  const NODE = process.env.PROD ? ALCHEMY_FREE_NODE: LOCAL_FORK ;
  const slippageTolerance = 300; // 3000 /10000 = 0.3
-
+ const POLYGOn_DEPLOYMENT = "0x6dE6678d877695c14f52940997487471AC765153";
 
 /* ** ********* **** ** ********* **** ** ********* ****/
 /* ** ********* **** ** ********* **** ** ********* ****/
@@ -50,11 +51,11 @@ async function _getController(){
 
     /** Ethers provider */
     // const provider = await new ethers.providers.JsonRpcProvider( write_node );    
-    const provider = new ethers.providers.JsonRpcProvider(NODE);
+    const provider = new ethers.providers.JsonRpcProvider(read_node);
 
     const signer = new Wallet (  process.env.PRIVATE_KEY_POC, provider );
 
-    const arbiContract = await getTraderContract(fork_deployment_address,signer);
+    const arbiContract = await getTraderContract(POLYGOn_DEPLOYMENT,signer);
     
     // const signerBalance = await provider.getBalance(signer.address);
 
@@ -101,30 +102,38 @@ async function _getController(){
 app.route('/v1/arbitrage/matic').post( async (req, res) => { 
     console.log(' calling /v1/arbitrage/matic...');
     const Controller = await  _getController();
-    const payload = req.body && JSON.parse(JSON.stringify(req.body));
+    const payload = req.body ? JSON.parse(JSON.stringify(req.body.body)) : null;
     // console.log('DATA ====>> payload in ',payload);
 
     // params: strategy ID & req payload
     const Strategy = await Controller.jsController.formatStrategy('001', payload);
-    console.log('Strategy provider: ', Strategy);
+    // console.log('Strategy provider: ', Strategy);
+
+    const provider = await Controller.jsController.getProvider();
+    let gasFees = await provider.getFeeData();
+    // gasFees = BigNumber.from(gasFees.toString());
+    console.log(gasFees)
+
+    console.log('gasFees: ',gasFees)
 
     const contractInstance = await Controller.contractInstance;
-     const tx =  await contractInstance.performStrategy(Strategy,
-        {
-            gasLimit:400000
-        })
-     console.log('tx',tx)
-    //     .send({
-    //         from: Controller.adminWallet.address,
-    //         gasLimit: 5000000,
-    //     }).on('transactionHash', (transactionHash) => {
-    //         console.log('transactionHash: ',transactionHash);
-    //     }).on('error', (err, receipt) => {
-    //         err && console.log('err: ', err.data);
-    //         receipt && console.log('receipt: ',receipt);
-    //     }).on('confirmation', (confirmationNumber) => {
-    //         console.log('confirmationNumber: ',confirmationNumber);
-    //     });
+    //  const tx =  await contractInstance.performStrategy(Strategy,
+    //     {
+    //         gasPrice: gasFees.gasPrice.toString(),
+    //         gasLimit: 500000
+    //     })
+    //  console.log('tx',tx)
+        // .send({
+        //     from: Controller.adminWallet.address,
+        //     gasLimit: 5000000,
+        // }).on('transactionHash', (transactionHash) => {
+        //     console.log('transactionHash: ',transactionHash);
+        // }).on('error', (err, receipt) => {
+        //     err && console.log('err: ', err.data);
+        //     receipt && console.log('receipt: ',receipt);
+        // }).on('confirmation', (confirmationNumber) => {
+        //     console.log('confirmationNumber: ',confirmationNumber);
+        // });
         
     
     // const successMsg = 

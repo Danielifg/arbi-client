@@ -108,8 +108,11 @@ module.exports = class ArbitrageController {
      */
     async formatStrategy(id, strategyObject){
         let {loanInfo,strategies} = JSON.parse(JSON.stringify(strategyObject));
+        console.log('Controller receive obj: ',loanInfo,strategies)
+
         const abiCoder = await ethers.utils.defaultAbiCoder;
         const Strategy = new Object();
+
         Strategy._strategyId = id,
         Strategy._strategyLength =  strategies.length,
         Strategy._lenderSymbol = await this._selectLoanProvider(),
@@ -119,13 +122,17 @@ module.exports = class ArbitrageController {
         
         let operation = strategies[0];
 
-        // start strategy loop
-            let [ _dexSymbol, _dexRouterAddress ] = await this._selectRouterDetails(operation.dexSymbol.dexA);
-            const _priceA = await this._formatTokenAmount(operation.tokenA,operation.priceA);
-            const _amountIn_1 = await this._formatTokenAmount(operation.tokenA,Strategy._loanAmount);
+// *********************** *********************** *********************** 
+                          // Operation 1
+// *********************** *********************** *********************** 
 
-            // console.log('_amountIn_1:..... ',_amountIn_1.toString());
-            const [ _expectedAmountOut,_path, _poolFees ] = await this._selectRoutePath(
+            let [ _dexSymbol, _dexRouterAddress ] = await this._selectRouterDetails(operation.dexSymbol.dexA);
+            let _priceA = Math.round(operation.priceA);
+
+            let _amountIn_1 = _dexSymbol === 'UNIV3'? 
+                await this._formatTokenAmount(operation.tokenA, Strategy._loanAmount) : Strategy._loanAmount;
+
+            let [ _expectedAmountOut,_path, _poolFees ] = await this._selectRoutePath(
                                                                         _dexSymbol,
                                                                         operation.tokenA, operation.tokenB,
                                                                         _amountIn_1.toString(),
@@ -133,35 +140,49 @@ module.exports = class ArbitrageController {
                                                                         false // not second swap
                                                                     );
 
-            const _expectedAmountOut_1 = _expectedAmountOut !== null ? BigNumber.from(_expectedAmountOut.toString()) : 0;
+            _expectedAmountOut = await this._formatTokenAmount(operation.tokenB, _expectedAmountOut);
+            _priceA = await this._formatTokenAmount(operation.tokenB, _priceA);
 
-            const operation_1 = abiCoder.encode(
-                    [ 'string', 'address', 'uint256','uint256','uint256','address[]','uint24[]'],
-                    [ _dexSymbol, _dexRouterAddress, _amountIn_1, _expectedAmountOut_1,
-                        _priceA, _path, _poolFees ]);
+            console.log('swap1:',[ _dexSymbol, _dexRouterAddress, _amountIn_1.toString(), _expectedAmountOut.toString(),_priceA.toString(), _path, _poolFees ]);
 
-            // console.log('swap1:',[ _dexSymbol, _dexRouterAddress, _amountIn_1.toString(), _expectedAmountOut_1.toString(),_priceA.toString(), _path, _poolFees ]);
+// *********************** *********************** ***********************
+                          // Operation 2
+// *********************** *********************** ***********************
 
-            // operation_2
+            let _amountIn_2 = _dexSymbol === 'UNIV3'? 
+            await this._formatTokenAmount(operation.tokenB, _expectedAmountOut) : _expectedAmountOut;
+
             let [ _dexSymbol2, _dexRouterAddress2 ] = await this._selectRouterDetails(operation.dexSymbol.dexB);
-
-        //     // this covers having uniV3 as second swap
-            const _amountIn_2 = _dexSymbol2 === 'UNIV3' ? _expectedAmountOut_1 : 0; 
-
-
-            const _priceB =  await this._formatTokenAmount(operation.tokenA, operation.priceB);
-            const [ _expectedAmountOut2, _path2, _poolFees2 ] = await this._selectRoutePath(
+            let _priceB = Math.round(operation.priceB);
+            let [ _expectedAmountOut2, _path2, _poolFees2 ] = await this._selectRoutePath(
                                                                         _dexSymbol2,
                                                                         operation.tokenA,
                                                                         operation.tokenB, 
-                                                                        _amountIn_2, // if 0,this amountIn is calculated on chain 
+                                                                        _amountIn_2.toString(), // if 0,this amountIn is calculated on chain 
                                                                         _priceB,
                                                                         true // second swap
                                                                     );
 
-            const _expectedAmountOut_2 = _expectedAmountOut2 !== 0 ? web3.utils.toWei(_expectedAmountOut2.toString()) : 0;
+            // AmountIn_2 is result of the first swap on chain, but for a swap at UniV3 
+            // we need an approx amount to get the optimal router path, pools and fees from Alpha Router
+            _amountIn_2 = _expectedAmountOut > 0 ?  await this._formatTokenAmount(operation.tokenB, _amountIn_1) : 0;
+            _expectedAmountOut2 = 0; // second out , loadn  + fees :: await this._formatTokenAmount(_path[1],_expectedAmountOut2);
+            _priceB = await this._formatTokenAmount(operation.tokenB , _priceB);
 
-            // console.log('swap2: ',[ _dexSymbol2, _dexRouterAddress2, _amountIn_2.toString(), _expectedAmountOut_2.toString(), _priceB.toString(), _path2, _poolFees2 ])
+            // console.log('_expectedAmountOut2: ',_expectedAmountOut2)
+            const _expectedAmountOut_2 = 0
+            // _expectedAmountOut2 !== 0 ? web3.utils.toWei(_expectedAmountOut2.toString()) : 0;
+
+            console.log('swap2: ',[ _dexSymbol2, _dexRouterAddress2, _amountIn_2.toString(), _expectedAmountOut_2.toString(), _priceB.toString(), _path2, _poolFees2 ])
+
+// *********************** *********************** ***********************
+                          // Encode
+// *********************** *********************** ***********************
+
+        const operation_1 = abiCoder.encode(
+                [ 'string', 'address', 'uint256','uint256','uint256','address[]','uint24[]'],
+                [ _dexSymbol, _dexRouterAddress, _amountIn_1, _expectedAmountOut,
+                    _priceA, _path, _poolFees ]);
 
             const operation_2 = abiCoder.encode(
                 [  'string', 'address', 'uint256','uint256','uint256','address[]','uint24[]'],
@@ -170,9 +191,7 @@ module.exports = class ArbitrageController {
 
         Strategy._ops.push(operation_1);
         Strategy._ops.push(operation_2);
-        // return Strategy;
         return Strategy;
-
     }
 
 
@@ -186,80 +205,67 @@ module.exports = class ArbitrageController {
         return "AAVE";
     }
 
-    // Price could be A or B
+    /**
+     *  Select uni v2 or v3 route and amount out
+     * @param {*} _dexSymbol 
+     * @param {*} _tokenA 
+     * @param {*} _tokenB 
+     * @param {*} _amountIn 
+     * @param {*} _price 
+     * @param {*} _isSecondSwap 
+     * @returns 
+     */
     async _selectRoutePath(_dexSymbol, _tokenA, _tokenB, _amountIn, _price, _isSecondSwap){
-        let _expectedAmountOut = 0;
-        let _path = [];
-        let _poolFees = [];
+        let _expectedAmountOut = 0, _path = [], _poolFees = [];
 
-        // this covers having uniV3 as first & 2nd swap
-        if(_dexSymbol === 'UNIV3'){
+// *********************** *********************** *********************** 
+                          // Get UNIv3 route & out
+// *********************** *********************** *********************** 
+        if(_dexSymbol === 'UNIV3'){   // this covers having uniV3 as first & 2nd swap
             const path = _isSecondSwap ? [_tokenB,_tokenA] : [_tokenA,_tokenB];
-            // console.log('_isSecondSwap: ', _isSecondSwap,'_amountIn: ', _amountIn, 'path: ',path);
-
+            
+            console.log('(path, _amountIn):', path, _amountIn);
+            
             const route = await this._getUniswapV3Route(path, _amountIn).then( route => {
                 _path =  route._routeDataFormated.path;
                 _poolFees = route._routeDataFormated.poolFees;
                 return route;
             });
+            console.log('route: ',route)
+            _expectedAmountOut = route.amountOut;
 
-            // console.log('route: ', route);
-
+            // Quote with Dex Screener price
             const uniswapPriceFeed = false;
-
-/* ** *********  DEX SCREEN PRICE **** **** ** ********* ****/
             if(uniswapPriceFeed && !_isSecondSwap){
-
                 _amountIn = BigNumber.from(_amountIn.toString()).mul(_price);
-                // console.log('_amountIn: ',_amountIn)
                 _expectedAmountOut = _amountIn - (_amountIn * (this.slippage / 10000));
-                // console.log(` DEX screener quote = _expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
-
-            }else if(!uniswapPriceFeed && !_isSecondSwap) {
-
-/* ** *********  UNISWAP QUOTE    **** ** ********* ****/
-                _expectedAmountOut = route.amountOut;
-                // console.log(`Uniswap quote   =  _expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
-/* ** ********* **** ** ********* **** ** ********* ****/
-           
             }
+// *********************** *********************** *********************** 
+                          // Get UNI V2 route & out
+// *********************** *********************** *********************** 
         } else {
-            // we calculate _expectedOut_1
-            if(_amountIn !== 0){
+            if(_amountIn !== 0){  // we calculate _expectedOut_1
                 const path = _isSecondSwap ? [_tokenB,_tokenA] : [_tokenA,_tokenB];
 
-
-                // // subtract slippage % of _amountIn
+                // subtract slippage % of _amountIn
                 _amountIn = BigNumber.from(_amountIn.toString()).mul(_price);
-
-                // console.log('_amountIn ==',_amountIn.toString());
-                // console.log('slippage amount:',_amountIn * (this.slippage / 10000));
-
-                _expectedAmountOut =  _amountIn - (_amountIn * (this.slippage / 10000));
-
-                // console.log(`_expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
-            
-            // not uniV3 and isFirstSwap = false
-            // we calculate _expectedOut_1 on chain
-            } else if(_amountIn !== 0){
-                _expectedAmountOut = 0;
-            }
+                _expectedAmountOut = _amountIn - (_amountIn * (this.slippage / 10000));
+            } 
             // not uni V3 and inverse path if _isSecondSwap =  true
             _path = _isSecondSwap ? [_tokenB, _tokenA] : [_tokenA, _tokenB];
             _poolFees = [0];
         }
-        // console.log(_dexSymbol,': ',[_expectedAmountOut,_path, _poolFees ])
-
         return [_expectedAmountOut,_path, _poolFees ];
     }
 
     async _getUniswapV3Route(path,amountIn){
+        amountIn = await this._formatTokenAmount(path[0], amountIn);
         return new Promise((resolve, reject) => {
             const route = this.UniswapV3Api.getTokenAPrice(
                 this.provider,
                 this.chainId, 
                 path[0],
-                BigNumber.from(amountIn),
+                amountIn,
                 path[1],
                 this.slippage
             );
@@ -314,7 +320,7 @@ module.exports = class ArbitrageController {
  * pay 10,000
  * gros profit = 770 usdc
  * 
- *          {
+ *           {
                     dexSymbol: { dexA: 'uniswap', dexB: 'sushi' },
                     tokenA: WETH
                     tokeB: SNX 
@@ -326,7 +332,7 @@ module.exports = class ArbitrageController {
                     priceB: 1238.59 SNX
                   },
                 ]
-              }
+             }
 
               we have
 
@@ -334,5 +340,13 @@ module.exports = class ArbitrageController {
               x tokenB in terms of tokenA
 
               unit USD price of SNX
+
+
+                // console.log('this.slippage ', this.slippage );
+                // console.log('_(_amountIn * (this.slippage / 10000))', (_amountIn * (this.slippage / 10000)));
+                // console.log(`_expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
+
+                                // console.log(` DEX screener quote = _expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
+
  */
 
