@@ -21,8 +21,20 @@ const {
     TREASURY
 } = require('./utils/address_lookup');
 
+/**
+ * JS controller 4 Flash loan Arbitrage Contract
+ * @author FlashBoyz team
+ * @version 1.0.1
+ */
 module.exports = class ArbitrageController { 
 
+    /**
+     * Init Arbitrage contract controller (SDK)
+     * @param {*} provider ether with node url
+     * @param {*} chainId 
+     * @param {*} arbitrageContract ethers contract instance
+     * @param {*} slippageTolerance global slippage set from server
+     */
     constructor(provider, chainId, arbitrageContract, slippageTolerance){
         this.provider = provider;
         this.network = 'matic'; // TODO dynamic
@@ -33,17 +45,36 @@ module.exports = class ArbitrageController {
 
     }
 
+    /**
+     * To Access contract address from server
+     * @returns arbitrageTrader.sol address
+     */
     async getControllerAddress(){
         return this.ArbitrageContract.address;
     }
 
+    /**
+     * To Access class provider from server
+     * @returns ethers object provider
+     */
     async getProvider(){
         return this.provider;
     }
+
+    /**
+     * Set Slippage at global scope
+     * @param {*} slippage 
+     */
     async setGlobalSlippage(slippage){
         this.slippage = slippage;
     }
 
+    /**
+     * Initial deposit into strategy contract for gasFees
+     * @param {*} wallet trader wallet funds
+     * @param {*} _depositAmount amount to manage fees
+     * @returns amount on strategy contract (arbitrage trader .sol)
+     */
     async deposit(wallet,_depositAmount){
         let tx = { 
           to: this.ArbitrageContract.address,
@@ -63,7 +94,7 @@ module.exports = class ArbitrageController {
     /**
      * Dynamic select of router 
      * @param {*} _dexName 
-     * @returns 
+     * @returns dex router address and dex symbol
      */
      _selectRouterDetails(_dexName){
         let _dexRouterAddress = null;
@@ -258,6 +289,14 @@ module.exports = class ArbitrageController {
         return [_expectedAmountOut,_path, _poolFees ];
     }
 
+
+
+    /**
+     * Query Uniswap V3 API for quote and route
+     * @param {*} path tokenA tokenB
+     * @param {*} amountIn 
+     * @returns amountOut, route & pool fees
+     */
     async _getUniswapV3Route(path,amountIn){
         amountIn = await this._formatTokenAmount(path[0], amountIn);
         return new Promise((resolve, reject) => {
@@ -273,80 +312,15 @@ module.exports = class ArbitrageController {
         });
     }
 
+    /**
+     * Format any amount to its respective token decimals
+     * @param {*} _tokenAddress 
+     * @param {*} amount 
+     * @returns formatted amount
+     */
     async _formatTokenAmount(_tokenAddress,amount){
         const tokenInstance = await new ethers.Contract(_tokenAddress,IERC20abi.abi, this.provider);
         const _decimals = await tokenInstance.decimals();
         return ethers.utils.parseUnits(amount.toString(),_decimals);
     }
-
-    async _decimalConverter(_amountA, path){
-
-        const tokenAInstance = await new ethers.Contract(path[0],IERC20abi.abi, this.provider);
-        const tokenBInstance = await new ethers.Contract(path[1],IERC20abi.abi, this.provider);
-
-        const _decimalsA = await tokenAInstance.decimals();
-        const _decimalsB = await tokenBInstance.decimals();
-
-
-        if (_decimalsA > _decimalsB) {
-
-            let decimals = BigNumber.from(10**(_decimalsA - _decimalsB));
-            // console.log(
-            //     '_decimalsA: ',_decimalsA,
-            //     '_decimalsB: ',_decimalsB,
-            // );
-
-            // console.log('a>b',_amountA);
-            // console.log('decimals', decimals.toString());
-
-            _amountA = BigNumber.from(_amountA.toString()).mul((decimals.toString()));
-            // console.log('_amountA>b',_amountA.toString());
-
-        } else if (_decimalsB > _decimalsA) {
-
-            let decimals = BigNumber.from(10**(_decimalsB - _decimalsA));
-            _amountA = BigNumber.from(_amountA.toString()).div(BigNumber.from(decimals.toString()));
-
-        }
-        return _amountA;
-    }
-
 }
-
-
-/** loan SNX 1000
- * swap usdc unis Weth for 1223.00 10,000 / 1223.00 = 8.7 WETH
- * swap 8.7 WETH * USDC at 1238.00 = 10770.6
- * pay 10,000
- * gros profit = 770 usdc
- * 
- *           {
-                    dexSymbol: { dexA: 'uniswap', dexB: 'sushi' },
-                    tokenA: WETH
-                    tokeB: SNX 
-                    pool: {
-                      poolA: '0xBD934A7778771A7E2D9bf80596002a214D8C9304',
-                      poolB: '0x0e44cEb592AcFC5D3F09D996302eB4C499ff8c10'
-                    },
-                    priceA: 1223.84 SNX
-                    priceB: 1238.59 SNX
-                  },
-                ]
-             }
-
-              we have
-
-              (swap1 1223 SNX * 1000 WETH) - slippage = amountOut WETHt
-              x tokenB in terms of tokenA
-
-              unit USD price of SNX
-
-
-                // console.log('this.slippage ', this.slippage );
-                // console.log('_(_amountIn * (this.slippage / 10000))', (_amountIn * (this.slippage / 10000)));
-                // console.log(`_expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
-
-                                // console.log(` DEX screener quote = _expectedOutput with slippage of ${this.slippage / 10000}:` , _expectedAmountOut);
-
- */
-

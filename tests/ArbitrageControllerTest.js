@@ -27,16 +27,12 @@ const signer = new Wallet (  process.env.PRIVATE_KEY_POC, provider );
 
 let _testStrategy = 
     { 
-      loanInfo:{ amount: 1000, asset: AAVE },
+      loanInfo:{ amount: 1, asset: WETH },
       strategies:   [
         {
-          dexSymbol: { dexA: 'uniswap', dexB: 'sushiswap' },
-          tokenA: USDC,
-          tokenB: AAVE ,
-          pool: {
-            poolA: '0x9F2b55f290fb1dd0c80d685284dbeF91ebEEA480',
-            poolB: '0x167384319B41F7094e62f7506409Eb38079AbfF8'
-          },
+          dexSymbol: { dexA: 'quick', dexB: 'uniswap' },
+          tokenA: WETH,
+          tokenB: WBTC,
           priceA: 2121.1,
           priceB: 2295.57
         }
