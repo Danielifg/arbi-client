@@ -23,7 +23,7 @@ const {getTraderContract} = require('./utils/getContracts');
 
 const fork_deployment_address = "0x69d2ffc1927146Dc0Fc18C7e41b8Bdd2167865DD";
 
-const port = 3002;
+const port = 3001;
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());

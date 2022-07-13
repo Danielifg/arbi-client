@@ -1,4 +1,3 @@
-
 'use strict';
 const {BigNumber} =require( "ethers");
 const ethers = require('ethers');
@@ -230,7 +229,7 @@ module.exports = class ArbitrageController {
      * TODO: implement multi loan provider 
      * module on contract and controller
      * 
-     * @returns only "AAVE" for the mean time
+     * @returns only "AAVE" for POC
      */
     async _selectLoanProvider(){
         return "AAVE";
