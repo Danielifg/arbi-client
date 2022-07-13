@@ -111,7 +111,7 @@ app.route('/v1/arbitrage/matic/deposit').post( async (req, res) => {
 
 
 app.route('/v1/arbitrage/matic').post( async (req, res) => { 
-    console.log(' calling /v1/arbitrage/matic...');
+    console.log(' calling /v1/arbitrage/matic...',req.body);
     const Controller = await  _getController();
     const payload = req.body ? JSON.parse(JSON.stringify(req.body.body)) : null;
     // console.log('DATA ====>> payload in ',payload);
